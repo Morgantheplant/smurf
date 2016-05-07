@@ -1,0 +1,25 @@
+{
+  "name": "surf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "build": "NODE_ENV=production browserify index.js | uglifyjs -cm > public/bundle.js",
+    "start": "ecstatic -p 8000 public",
+    "watch": "watchify index.js -o public/bundle.js -dv",
+    "dev": "nodemon server.js & npm run watch"
+  },
+  "author": "morgantheplant",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^13.0.1",
+    "ecstatic": "^1.4.0",
+    "express": "^4.13.4",
+    "http": "0.0.0",
+    "matter": "^0.2.0",
+    "matter-js": "^0.10.0",
+    "nodemon": "^1.9.2",
+    "uglify-js": "^2.6.2",
+    "watchify": "^3.7.0"
+  }
+}
