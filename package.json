@@ -15,6 +15,7 @@
     "browserify": "^13.0.1",
     "ecstatic": "^1.4.0",
     "express": "^4.13.4",
+    "express-handlebars": "^3.0.0",
     "http": "0.0.0",
     "matter": "^0.2.0",
     "matter-js": "^0.10.0",
