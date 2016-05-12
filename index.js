@@ -5,15 +5,16 @@ var map = require('./map.js');
 var clock = require('./public/LEDclock.js');
 
 
+// function timeLoop(){
+//   clock.update();
+//   setInterval(function(){
+//     timeLoop();
+//   },1000);  
+// }
 
-function timeLoop(){
-  clock.update();
-  setInterval(function(){
-    timeLoop();
-  },1000);  
-}
 
-timeLoop();
+
+// timeLoop();
 
 
 window.initMap = map;
@@ -25,8 +26,6 @@ window.initMap = map;
 		Composite = Matter.Composite,
 		Composites = Matter.Composites,
 		Constraint = Matter.Constraint;
-
-
 
 var svgns = "http://www.w3.org/2000/svg";
 var ary = dataBuilder(surf)
@@ -90,7 +89,7 @@ function createBodies(days){
       rect.index = i;
       rect.physicsBody = physicsBody;
       //wave height
-      var spLen = (days[i].surfMax * 30 + height)
+      var spLen = (days[i].surfMax * 20 + height)
       vertSpring.length = spLen;
 
       rect.addEventListener('mouseover', function(){
@@ -124,34 +123,63 @@ function createBodies(days){
 window.loaded = false;
 
 window.startSim = function(){
+  
   if(!window.loaded){
     window.loaded = true;  
     svgBG.style.opacity = 1;
+    if(window.localStorage){
+    var prevData = window.localStorage.getItem("surf-data");
+      if(!prevData){
+        $.ajax({
+          url:"surf-report",
+          success: function(data){
+             window.localStorage.setItem("surf-data", data);
+             initApp(data) 
+          }
+        });
+      } else {
+        setTimeout(function(){
+          initApp(prevData);
+        },100);
+      }
+    }
     document.getElementsByClassName('container')[0].style.opacity = 1;
-    setTimeout(function(){
-      createBodies(ary);
-      engine.world.gravity.y = -0.1;
-      World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));
-      // run the engine
-      Engine.run(engine);
-  
-  // //////////////////////////
-  // //debugging    
-  // var renderer = Render.create({
-  //     element: document.body,
-  //     engine: engine
-  // });
-  // Render.run(renderer);
-  // //debugging
-  // /////////////////////////
-
-      render();
-    },100);
+    
   }
   
 }
 
+function initApp(data){
+  createBodies(data);
+  engine.world.gravity.y = -0.1;
+  World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));
+  // run the engine
+  Engine.run(engine);
+// //////////////////////////
+// //debugging    
+// var renderer = Render.create({
+//     element: document.body,
+//     engine: engine
+// });
+// Render.run(renderer);
+// //debugging
+// /////////////////////////
 
+  render();
+}
+
+if(window.sessionStorage){
+  var init = window.sessionStorage.getItem("surf-data"),
+  prevState = JSON.parse(init);
+  if(!prevState){
+    $.ajax({
+      url:"surf-report",
+      success: function(){
+        
+      }
+    })
+  }
+}
 
 
 // render loop

@@ -11,6 +11,10 @@ app.get('/', function(req, res) {
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY });
 });
 
+app.get('surf-report', function(req, res){
+  
+})
+
 app.use(express.static(__dirname + '/public'));
 
 http.listen(port, function(){
