@@ -1,6 +1,7 @@
 config.js
 *node_modules*
-./public/bundle.js
+*bundle.js
+
 *.log
 DS_Store
 .DS_Store?
@@ -10,3 +11,5 @@ DS_Store
 ehthumbs.db
 Thumbs.db
 data.json
+*bundle*
+*.log*
