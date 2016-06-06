@@ -8,7 +8,7 @@ var clock = require('./public/LEDclock.js');
 
 function timeLoop(){
   clock.update();
-  setInterval(function(){
+  setTimeout(function(){
     timeLoop();
   },1000);  
 }
