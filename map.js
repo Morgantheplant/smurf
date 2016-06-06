@@ -9,6 +9,6 @@ module.exports = function() {
 
     map.setOptions({styles: styles});
     map.addListener('tilesloaded', function(){  
-       startSim();
+       window.loaded = true;
     });
 }
