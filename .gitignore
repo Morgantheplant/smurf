@@ -4,6 +4,7 @@ config.js
 
 *.log
 DS_Store
+*DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100

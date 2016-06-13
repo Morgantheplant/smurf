@@ -4,61 +4,44 @@ import classNames from 'classnames'
 class Digit extends React.Component {
    constructor (props) {
     super(props)
+    this.getBorderColor.bind(this);
   }
   render () {
     return (
         <div className={classNames("digit", this.props.digitType)}>
-          <div className="top" style={ 
-            {
-              "borderTopColor": ((this.props.digitStates[0]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="top" style={
+            this.getBackgroundColor("borderTopColor", this.props.digitStates[0]);
           }></div>
-          <div className="left-top" style={ 
-            {
-              "borderLeftColor": ((this.props.digitStates[1]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="left-top" style={
+            this.getBackgroundColor("borderLeftColor", this.props.digitStates[1]); 
           }></div>
-          <div className="right-top" style={ 
-            {
-              "borderRightColor": ((this.props.digitStates[2]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="right-top" style={
+            this.getBackgroundColor("borderRightColor", this.props.digitStates[2]); 
           }></div>
-          <div className="middle1" style={ 
-            {
-              "borderTopColor": ((this.props.digitStates[3]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="middle1" style={
+            this.getBackgroundColor("borderTopColor", this.props.digitStates[3]); 
           }></div>
-          <div className="middle2" style={ 
-            {
-              "borderBottomColor": ((this.props.digitStates[4]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="middle2" style={
+            this.getBackgroundColor("borderBottomColor", this.props.digitStates[4]); 
           }></div>
-          <div className="left-bottom" style={ 
-            {
-              "borderLeftColor": ((this.props.digitStates[5]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="left-bottom" style={
+            this.getBackgroundColor("borderLeftColor", this.props.digitStates[5]); 
           }></div>
           <div className="right-bottom" style={ 
-            {
-              "borderRightColor": ((this.props.digitStates[6]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+              this.getBackgroundColor("borderRightColor", this.props.digitStates[6]); 
           }></div>
-          <div className="bottom" style={ 
-            {
-              "borderBottomColor": ((this.props.digitStates[7]) ? this.props.onColor :
-                this.props.offColor)
-            } 
+          <div className="bottom" style={
+            this.getBackgroundColor("borderBottomColor", this.props.digitStates[7]);
           }></div>
         </div>)
+
   }
- 
+
+  getBackgroundColor(border, isOn){
+    let style = {}
+    let color = (isOn) ? this.props.colorOn : this.props.colorOff
+    return style[border] = color
+  }
 }
 
 Card.propTypes = {

@@ -9,10 +9,14 @@ var map = require('./map.js');
 
 window.initMap = map;
 
+const store = createStore(rootStore)
+
 render((
-  <Router history={ browserHistory }>
-     <Route path="/" component={ Root }>
-    </Route>  
-  </Router>
+  <Provider store={store}>
+    <Router history={ browserHistory }>
+      <Route path="/" component={ Root }>
+      </Route>  
+    </Router>
+  </Provider>  
 ), document.querySelector('#react-container'));
 
