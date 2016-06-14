@@ -2,11 +2,13 @@ import React from 'react'
 import classNames from 'classnames'
 import ClockContainer from '../containers/ClockContainer'
 import { connect } from 'react-redux';
+import { clockTick } from '../actions/clockActions'
 var Matter = require('matter-js');
 var surf = require('../public/data.json');
 var dataBuilder = require('../dataBuilder.js');
+var store = require('../reducers/rootStore').default;
 
-
+console.log(clockTick, store)
 //var clock = require('../public/LEDclock.js');
 
 class Root extends React.Component {
@@ -30,6 +32,7 @@ class Root extends React.Component {
         startSim();
       }
       
+      store.dispatch(clockTick())
       setTimeout(function(){
         timeLoop();
       },1000);  

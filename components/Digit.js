@@ -38,11 +38,9 @@ class Digit extends React.Component {
   }
 
   getBackgroundColor(border, isOn){
-
     let style = {}
     let color = (isOn) ? this.props.colorOn : this.props.colorOff
     style[border] = color
-    console.log(this.props.digitType, style)
     return style;
   }
 }
