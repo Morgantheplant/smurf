@@ -1,5 +1,7 @@
-import React from '../node_modules/react'
+import React from 'react'
 import classNames from 'classnames'
+import clockTick from '../actions/clockActions'
+import Digit from './Digit'
 
 class Clock extends React.Component {
   constructor (props) {
@@ -7,10 +9,11 @@ class Clock extends React.Component {
     this.getBackgroundColor.bind(this);
   }
   render () {
+   
     return (
       <div className="container">
         <div className="am-pm" style={
-          this.getBackgroundColor(this.digitValues[6])
+          this.getBackgroundColor(this.props.digitValues[6])
         }></div>
 
         <Digit digitType={"hour-ten"}
@@ -26,7 +29,7 @@ class Clock extends React.Component {
         /> 
 
         <div className="colon1" style={
-          this.getBackgroundColor(true);
+          this.getBackgroundColor(true)
         }></div>
         <div className="colon2" style={
           this.getBackgroundColor(true)
@@ -72,4 +75,6 @@ class Clock extends React.Component {
     }
   }
 
-export default Clock;
+}  
+
+export default Clock 

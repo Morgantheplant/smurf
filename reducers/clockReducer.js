@@ -1,19 +1,15 @@
 const initialState = {
-  time: 0
+  time: Date.now()
 };
 
-// Reducer function
-export const timerStore = (state = initialState, action) => {
+export const clockReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'TICK':
       return {
         time: action.time,
-      };
-
+      }
     default: 
       return state;
   }
 }
 
-// Create store using the reducer
-const store = createStore(timer);

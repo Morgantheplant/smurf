@@ -1,10 +1,11 @@
 import React from '../node_modules/react'
 import classNames from 'classnames'
-import Clock from './components/Clock'
+import Clock from '../components/Clock'
+import { connect } from 'react-redux';
 
 //possibly add these values to store
-const onColor = 'teal';
-const offColor = '#021019';
+const colorOn = 'teal';
+const colorOff = '#021019';
 
 const numberCodes = {
   0:[1,1,1,0,0,1,1,1],
@@ -28,14 +29,14 @@ class ClockContainer extends React.Component {
   render () {
   	return (
   	  <Clock digitValues={this.formatTime(this.props.time)}
-        onColor={onColor}
-        offColor={offColor}
+        colorOn={colorOn}
+        colorOff={colorOff}
       />)
     }
 
   formatTime(date){
-    var date,
-    hours,
+    date = new Date(date);
+    let hours,
     isPM,
     minutes,
     seconds,
@@ -46,7 +47,6 @@ class ClockContainer extends React.Component {
     secondTen,
     second,
     timeArray;
-    
     hours = date.getHours();
     
     isPM = hours > 13;
@@ -69,15 +69,15 @@ class ClockContainer extends React.Component {
     secondTen = (seconds.length<2) ? 0 : seconds[0];
     second = (seconds.length<2) ? seconds[0] : seconds[1];
 
-	  return ([ numberCodes[hourTen], numberCodes[hour], numberCodes[minuteTen],
-          numberCodes[minute], numberCodes[secondTen], numberCodes[second]);
+	  return [ numberCodes[hourTen], numberCodes[hour], numberCodes[minuteTen],
+          numberCodes[minute], numberCodes[secondTen], numberCodes[second], isPM ];
   }
 }
 
 function mapStateToProps(state) {
   return {
-	  time: state.clockReducer.time
+	  time: state.time
   }
 }
 
-export default connect(mapStateToProps)(ClockContainer)
+export default connect(mapStateToProps)(ClockContainer);

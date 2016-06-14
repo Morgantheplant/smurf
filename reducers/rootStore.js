@@ -1,9 +1,12 @@
-import { combineReducers, createStore } from 'redux'
+import { createStore, combineReducers } from '../node_modules/redux'
 import { clockReducer } from './clockReducer'
+// Create store using the reducer
+const store = createStore(clockReducer);
 
-let mainStore = combineReducers({
-  clockReducer
-  //will add more reducers here
-});
+// add more reducers here alter
+// let mainStore = combineReducers({
+//   clockReducer: clockReducer
+// });
 
-export default rootStore
+
+export default store;
