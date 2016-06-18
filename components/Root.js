@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import ClockContainer from '../containers/ClockContainer'
 import { connect } from 'react-redux';
 import { clockTick } from '../actions/clockActions'
+import Tides from './Tides'
+
 var store = require('../reducers/rootStore').default;
 var startSim = require('../mainAnimation');
 
@@ -11,10 +13,11 @@ class Root extends React.Component {
     super(props)
   }
   render () {
-     return (
-       <div>
-         <ClockContainer />
-       </div>
+    return (
+      <div>
+        <Tides /> 
+        <ClockContainer />
+      </div>
       )
   }
   componentDidMount(){
