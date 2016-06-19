@@ -5,6 +5,7 @@ import TideLabel from './TideLabel'
 //todo: see how es2015 imports handles json 
 let Tide = require('../public/data.json').Tide;
 
+//todo: turn these into props
 let tidesArray = Tide.dataPoints;
 let width = 200;
 let height = 100;
@@ -19,6 +20,8 @@ let highestData = {};
 let lowestData = {};
 let specialTides = [];
 let sunriseSunset = [];
+let targetDays = [];
+let targetDayIndex = 0;
 
 tidesArray.forEach(function(item, index){
   let time = new Date(item.time * 1000);
@@ -32,6 +35,10 @@ tidesArray.forEach(function(item, index){
   item.rangeX = normalizeRange(0,width,0,dayRange,item.timeData, time, hour);
   item.rangeY = normalizeRange(0,height,8,-4,item.height, time, hour);
   item.day = dayOfMonth;
+  if(!targetDays["index"+dayOfMonth]){
+    targetDays.push(dayOfMonth);
+    targetDays["index"+dayOfMonth] = true;
+  }
 });
 
 function normalizeRange(newmin, newmax, oldmin, oldmax, oldval, time, hour){
@@ -50,20 +57,50 @@ class Tides extends React.Component {
       specialTides:[],
       showLabels:false
     }
+    this.changeDay = this.changeDay.bind(this);
+    this.changeDayBack = this.changeDayBack.bind(this);
+    this.changeToStart = this.changeToStart.bind(this);
   }
   
   componentDidMount() {
     this.updateCanvas();
+  }
+
+  changeDay(){
+    if(targetDayIndex < targetDays.length-2){
+      let context = this.refs.tidesCanvas.getContext('2d');
+      context.clearRect(0, 0, width, height);
+      targetDayIndex++;
+      this.updateCanvas();
+    }
+  }
+
+  changeToStart(){
+    if(targetDayIndex > 0){
+      this.changeDayBack();
+      setTimeout(function(){
+        this.changeToStart()
+      }.bind(this),50)
+    }
+  }
+
+  changeDayBack(){
+    if(targetDayIndex > 0){
+      let context = this.refs.tidesCanvas.getContext('2d');
+      context.clearRect(0, 0, width, height);
+      targetDayIndex--;
+      this.updateCanvas();
+    }
   }
   
   updateCanvas() {
     const cx = this.refs.tidesCanvas.getContext('2d');
     cx.beginPath();
     cx.moveTo(0,height);
-    let newSunState = this.state.sunriseSunset.slice();
-    let newTideState = this.state.specialTides.slice();
+    let newSunState = [];
+    let newTideState = [];
     tidesArray.forEach(function(item, index){
-      if(item.day === 3){
+      if(item.day === targetDays[targetDayIndex]){
         // find highest and lowest tide values
         // possibly use to calibrate chart
         //
@@ -154,6 +191,12 @@ class Tides extends React.Component {
         style={ {width: width + "px", height: height + "px"} } >
         <canvas  ref="tidesCanvas" width={width} height={height}/>
          { this.state.specialTides.map(this._createLabels, this) }
+         <button style={{position:"absolute", left: "0px",top:height + 20 + "px"}}
+           onClick={this.changeDay}
+         >day forward</button>
+         <button style={{position:"absolute", left: "100px",top:height + 20 + "px"}}
+           onClick={this.changeToStart}
+         >day back</button>
       </div>)
   }
 

@@ -9,8 +9,8 @@ class TideLabel extends React.Component {
   render () {
     let labelStyle = {
           position: "absolute",
-          left: this.props.xPos + "px",
-          top: this.props.yPos + "px",
+          left: this.props.xPos - 15 + "px",
+          top: this.props.yPos - 15 + "px",
           color: this.props.color,
           fontSize: "10px"
         };
