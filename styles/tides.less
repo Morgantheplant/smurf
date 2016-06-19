@@ -2,7 +2,15 @@
     position:absolute;
     border: 1px solid rgba(167, 0, 0, 0.69);
     box-shadow: 1px 1px 5px black;
-    top: 10px;
+    top: 20px;
     background: rgba(0, 0, 0, 0.41);
-    right: 10px;
+    right: 20px;
+    cursor:pointer;
+    &:hover > .label{
+        opacity: 1;
+    }
+    .label{
+        opacity: 0;
+        transition:.5s opacity;
+    }
 }
