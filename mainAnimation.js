@@ -22,11 +22,11 @@ var Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies;
 
-// create an engine
+// todo: encapsulate physics engine into Singleton module 
+//and rename engine to currentEngine so it can be tracked
+// and cleared if it already exists
+// possibly move this into its own component
 var engine = Engine.create();
-
-
-
 
 var svgBG = document.getElementById('world');
 var text = document.getElementById('text-container').children;
@@ -50,7 +50,7 @@ function createBodies(days){
       rect.setAttributeNS(null, 'x', xCoord);
       svgBods.push(rect)
       svgBG.appendChild(rect);
-      // physics bodies 
+      
       var physicsBody = Bodies.rectangle(xCoord, svgBoxDims.height, 2, 2);
       var vertSpring = Constraint.create({ bodyA: physicsBody, pointB: { x: xCoord, y: svgBoxDims.height } })
        var vertLineSVG = document.createElementNS(svgns, 'line');
@@ -72,7 +72,7 @@ function createBodies(days){
       vertSpring.stiffness = 0.02;
       rect.index = i;
       rect.physicsBody = physicsBody;
-      //wave height
+      // wave height
       var spLen = (days[i].surfMax * 30 + height)
       vertSpring.length = spLen;
 
@@ -80,6 +80,8 @@ function createBodies(days){
         this.setAttributeNS(null, 'height', '30');
         this.setAttributeNS(null, 'width', '30');
         this.style.transform = "translate(-15%,-40%)"
+        // todo: refactor DOM elements into component and 
+        // dispatch events from here 
         var day = days[this.index]
         text[0].innerText = day.dayOfWeek + ' ' + day.date
         text[1].innerText = day.surfText;
@@ -97,6 +99,7 @@ function createBodies(days){
         Body.setVelocity(physicsBodies[this.index], {x:0,y:-5}, {x:0.000,y:0.001});
         this.setAttributeNS(null, 'height', '20');
         this.setAttributeNS(null, 'width', '20');
+        //todo: dispatch event from here
         this.style.transform = "translate(0%,0%)"
       }.bind(rect));
       physicsBodies.push(physicsBody);
@@ -104,7 +107,10 @@ function createBodies(days){
   }
 }
 
-// render loop
+// todo: make render loop extensible
+// add render queue and pass in highresTimestamp
+// add ability to queue and dequeue animations
+// remove setTimeout for clock
 function render() {
     var bodies = Composite.allBodies(engine.world);
     var constraints = Composite.allConstraints(engine.world);
@@ -123,6 +129,7 @@ module.exports = function startSim(){
     svgBG.style.opacity = 1;
     document.getElementsByClassName('container')[0].style.opacity = 1;
     setTimeout(function(){
+
       createBodies(ary);
       engine.world.gravity.y = -0.1;
       World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));

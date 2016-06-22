@@ -1,5 +1,7 @@
 var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
+//todo: add tide builder either in same file or different file for cleaning up data
+
 module.exports = function(raw){
     var multiDay = [];
     var breakDown = raw["Analysis"];

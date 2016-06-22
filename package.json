@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "ecstatic -p 8000 public",
+    "start": "node server.js",
     "dev": "nodemon server.js & npm run watch",
     "watch": "npm run watch-css & npm run watch-js",
     "build": "npm run build-css & npm run build-js",
     "watch-js": "watchify index.js -t browserify-css -o public/bundle.js -dv",
     "watch-css": "catw -c 'lessc --clean-css -' 'styles/*.less' -o public/styles.min.css",
     "build-js": "NODE_ENV=production browserify -t browserify-css index.js | uglifyjs -cm > public/bundle.js",
-    "build-css": "lessc --clean-css styles/index.less styles.min.css"
+    "build-css": "lessc --clean-css styles/index.less pulic/styles.min.css"
   },
   "author": "morgantheplant",
   "dependencies": {
@@ -22,7 +22,6 @@
     "browserify-css": "^0.8.4",
     "catw": "^1.0.1",
     "classnames": "^2.2.5",
-    "ecstatic": "^1.4.0",
     "express": "^4.13.4",
     "express-handlebars": "^3.0.0",
     "http": "0.0.0",

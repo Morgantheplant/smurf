@@ -23,6 +23,8 @@ class Root extends React.Component {
   componentDidMount(){
     var started = false;
 
+
+    //todo: remove setTimeout and refactor info rAF
     function timeLoop(){
       // hack to start sim after loaded
       if(!started && window.loaded){
