@@ -27,7 +27,8 @@ var Engine = Matter.Engine,
 // and cleared if it already exists
 // possibly move this into its own component
 var engine = Engine.create();
-
+// http://brm.io/matter-js/docs/classes/Engine.html
+// Matter.Engine.clear(engine);
 var svgBG = document.getElementById('world');
 var text = document.getElementById('text-container').children;
 var dateHeading = document.getElementById('date');
