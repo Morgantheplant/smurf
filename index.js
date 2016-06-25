@@ -6,7 +6,8 @@ var Root = require('./components/Root').default;
 var browserHistory = require('react-router').browserHistory;
 var history = require('react-router').history;
 var render = require('react-dom').render;
-var map = require('./map.js');
+var map = require('./map');
+var startSim = require('./mainAnimation');
 
 var store = require('./reducers/rootStore').default;
 

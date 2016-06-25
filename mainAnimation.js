@@ -1,6 +1,8 @@
 var Matter = require('matter-js');
-var surf = require('./public/data.json');
+var surf = require('./data/surfData.json');
 var dataBuilder = require('./dataBuilder.js');
+var mainAnimationLoop = require('./mainAnimationLoop');
+
 var World = Matter.World,
 Bodies = Matter.Bodies,
 Body = Matter.Body,
@@ -112,12 +114,10 @@ function createBodies(days){
 // add render queue and pass in highresTimestamp
 // add ability to queue and dequeue animations
 // remove setTimeout for clock
+
 function render() {
-    var bodies = Composite.allBodies(engine.world);
-    var constraints = Composite.allConstraints(engine.world);
-
-    window.requestAnimationFrame(render);
-
+  var bodies = Composite.allBodies(engine.world);
+  var constraints = Composite.allConstraints(engine.world);
     for (var i = 0; i < bodies.length; i++) {
         var vertices = bodies[i].vertices;
         var rectSvg = svgBods[i];
@@ -129,14 +129,16 @@ function render() {
 module.exports = function startSim(){ 
     svgBG.style.opacity = 1;
     document.getElementsByClassName('container')[0].style.opacity = 1;
-    setTimeout(function(){
-
+    mainAnimationLoop.setAnimationTimeout(function(){
       createBodies(ary);
       engine.world.gravity.y = -0.1;
       World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));
-      // run the engine
-      Engine.run(engine);
-  
+      // // run the engine
+      function matterEngine(){
+        Engine.update(engine, 1000 / 60)
+      }
+      mainAnimationLoop.addAnimation(matterEngine);
+      mainAnimationLoop.addAnimation(render);
   // //////////////////////////
   // //debugging    
   // var renderer = Render.create({
@@ -146,8 +148,6 @@ module.exports = function startSim(){
   // Render.run(renderer);
   // //debugging
   // /////////////////////////
-
-      render();
     },100);
-  
 }
+

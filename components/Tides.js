@@ -4,7 +4,7 @@ import TideLabel from './TideLabel'
 
 //import {Tide} from '../public/data.json'
 //todo: see how es2015 imports handles json 
-let Tide = require('../public/data.json').Tide;
+let Tide = require('../data/surfData.json').Tide;
 
 //todo: add reducer here, replace forEach with for loops + micro optimizations where possible
 

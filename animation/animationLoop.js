@@ -1,4 +1,4 @@
-var rAF_Polyfills = require('./rAFPolyfills');
+var rAF_Polyfills = require('./rAFPolyfill');
 var rAF = rAF_Polyfills.requestAnimationFrame;
 var cAF = rAF_Polyfills.cancelAnimationFrame;
 

@@ -4,9 +4,10 @@ import ClockContainer from '../containers/ClockContainer'
 import { connect } from 'react-redux';
 import { clockTick } from '../actions/clockActions'
 import Tides from './Tides'
+import mainAnimationLoop from '../mainAnimationLoop';
 
 var store = require('../reducers/rootStore').default;
-var startSim = require('../mainAnimation');
+
 
 class Root extends React.Component {
    constructor (props) {
@@ -21,24 +22,10 @@ class Root extends React.Component {
       )
   }
   componentDidMount(){
-    var started = false;
-
-
-    //todo: remove setTimeout and refactor info rAF
-    function timeLoop(){
-      // hack to start sim after loaded
-      if(!started && window.loaded){
-        started = true;
-        startSim();
-      }
-      // call that runs the clock component
-      store.dispatch(clockTick())
-      setTimeout(function(){
-        timeLoop();
-      },1000);  
-    }
-
-    timeLoop();
+    mainAnimationLoop.start();
+    mainAnimationLoop.setAnimationInterval(function(){
+       store.dispatch(clockTick())
+    }, 1000)    
   }
  
 }
