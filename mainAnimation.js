@@ -12,7 +12,6 @@ Composites = Matter.Composites,
 Constraint = Matter.Constraint;
 
 
-
 var svgns = "http://www.w3.org/2000/svg";
 var ary = dataBuilder(surf)
 
@@ -64,7 +63,6 @@ function createBodies(days){
       vertLineSVG.setAttributeNS(null, 'x2',xCoord + width/2)
       svgBG.appendChild(vertLineSVG);
       lines.push(vertLineSVG);
-
       var prevBody = physicsBodies[i-1]
       if(prevBody){
         var horizontalSpring = Constraint.create({ bodyA: physicsBody, bodyB: prevBody})
@@ -148,6 +146,7 @@ module.exports = function startSim(){
   // Render.run(renderer);
   // //debugging
   // /////////////////////////
-    },100);
+    },500);
 }
 
+module

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import ClockContainer from '../containers/ClockContainer'
 import { connect } from 'react-redux';
 import { clockTick } from '../actions/clockActions'
+import Forecast from '../components/Forecast'
 import Tides from './Tides'
 import mainAnimationLoop from '../mainAnimationLoop';
 
@@ -18,6 +19,12 @@ class Root extends React.Component {
       <div>
         <Tides /> 
         <ClockContainer />
+        <Forecast 
+          width={800} 
+          height={500}
+          parentWidth={800}
+          parentHeight={500} 
+          />
       </div>
       )
   }
