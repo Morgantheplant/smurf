@@ -9,11 +9,6 @@ function AnimationLoop(){
   this._time = 0;
   
   this.updateLoop = function updateLoop(time){ 
-    // stop loop if no more animations
-    if(!this.animations.length){
-        return null;
-    }
-    
     this._time = time;
     //loop through all animations call them and pass in time
     for(var i = 0; i < this.animations.length; i++){

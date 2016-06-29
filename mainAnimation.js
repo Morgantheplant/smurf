@@ -121,12 +121,16 @@ function render() {
     for (var i = 0; i < bodies.length; i++) {
         var vertices = bodies[i].vertices;
         var rectSvg = svgBods[i];
-        rectSvg.setAttributeNS(null, 'y', vertices[0].y);
-        lines[i].setAttributeNS(null, 'y2',vertices[0].y + height)
+        if(rectSvg && lines && lines[i]){
+          rectSvg.setAttributeNS(null, 'y', vertices[0].y);
+          lines[i].setAttributeNS(null, 'y2',vertices[0].y + height)
+        }
     }
 };
 
+var called = false;
 module.exports = function startSim(){ 
+  if(!called){
     svgBG.style.opacity = 1;
     document.getElementsByClassName('container')[0].style.opacity = 1;
     mainAnimationLoop.setAnimationTimeout(function(){
@@ -139,15 +143,9 @@ module.exports = function startSim(){
       }
       mainAnimationLoop.addAnimation(matterEngine);
       mainAnimationLoop.addAnimation(render);
-  // //////////////////////////
-  // //debugging    
-  // var renderer = Render.create({
-  //     element: document.body,
-  //     engine: engine
-  // });
-  // Render.run(renderer);
-  // //debugging
-  // /////////////////////////
     },100);
+    called = true;
+  }
+   
 }
 
