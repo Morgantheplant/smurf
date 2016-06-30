@@ -14,3 +14,5 @@ Thumbs.db
 data.json
 *bundle*
 *.log*
+*.DS_Store
+*styles.min.css*

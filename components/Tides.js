@@ -136,8 +136,8 @@ class Tides extends React.Component {
 
     cx.lineTo(width, height);
     cx.lineTo(0,height);
-    cx.strokeStyle="#FF0000";
-    cx.fillStyle = "rgba(199, 23, 23, 0.75)";
+    cx.strokeStyle="#007297";
+    cx.fillStyle = "#007297";
     cx.fill();
     cx.closePath();
     cx.stroke();

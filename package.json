@@ -11,7 +11,7 @@
     "watch-js": "watchify index.js -t browserify-css -o public/bundle.js -dv",
     "watch-css": "catw -c 'lessc --clean-css -' 'styles/*.less' -o public/styles.min.css",
     "build-js": "NODE_ENV=production browserify -t browserify-css index.js | uglifyjs -cm > public/bundle.js",
-    "build-css": "lessc --clean-css styles/index.less pulic/styles.min.css"
+    "build-css": "lessc --clean-css styles/index.less public/styles.min.css"
   },
   "author": "morgantheplant",
   "dependencies": {

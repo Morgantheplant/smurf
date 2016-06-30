@@ -11,7 +11,7 @@ class Clock extends React.Component {
   render () {
    
     return (
-      <div className="container">
+      <div className="led_clock_container">
         <div className="am-pm" style={
           this.getBackgroundColor(this.props.digitValues[6])
         }></div>

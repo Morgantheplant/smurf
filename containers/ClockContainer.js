@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 // remove settimeout and refactor into rAF render loop
 
 //possibly add these values to store
-const colorOn = 'teal';
+const colorOn = '#007297';
 const colorOff = '#021019';
 
 const numberCodes = {

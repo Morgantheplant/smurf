@@ -1,0 +1,46 @@
+.surf_report_container{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  color:white;
+  z-index: 20;
+  text-align: center;
+  font-family: verdana;
+  
+  .report_container {
+    position: relative;
+    border-bottom: 2px solid #007297;
+    border-top: 2px solid #007297;
+    height:100px;
+    width:325px;
+    margin: auto;
+  }
+
+  
+  .prev-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -50px;
+  }
+
+  .next-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%);
+    right: -50px;
+  }
+  .surf_height{
+    float:left;
+    margin-left:10px;
+    span.numbers {
+      font-size: 30px;
+    }
+  }
+  .conditions{
+    float:right;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+}

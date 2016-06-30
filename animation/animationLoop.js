@@ -33,7 +33,6 @@ AnimationLoop.prototype.stop = function stop(){
 };
 
 AnimationLoop.prototype.addAnimation = function addAnimation(animation){
-    console.log(animation)
   if (typeof animation === "function" && this.animations.indexOf(animation) === -1) {
     this.animations.push(animation);
   }
