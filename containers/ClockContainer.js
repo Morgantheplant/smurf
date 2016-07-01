@@ -71,7 +71,6 @@ class ClockContainer extends React.Component {
     minute = (minutes.length<2) ? minutes[0] : minutes[1];
     secondTen = (seconds.length<2) ? 0 : seconds[0];
     second = (seconds.length<2) ? seconds[0] : seconds[1];
-
 	  return [ numberCodes[hourTen], numberCodes[hour], numberCodes[minuteTen],
           numberCodes[minute], numberCodes[secondTen], numberCodes[second], isPM ];
   }

@@ -16,3 +16,5 @@ data.json
 *.log*
 *.DS_Store
 *styles.min.css*
+public/styles.min.css*
+*public/styles.min.css
