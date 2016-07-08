@@ -16,7 +16,7 @@ class SurfReport extends React.Component {
             <div className="next-arrow">&gt;</div>
             <div className="report_container">
               <div className="surf_height">
-                <p>
+                <p className="surf-range">
                   <span className="numbers">{this.props.surfHeightRange}</span>
                   <span className="ft">ft</span>
                 </p>

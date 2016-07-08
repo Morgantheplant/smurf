@@ -78,7 +78,7 @@ class ClockContainer extends React.Component {
 
 function mapStateToProps(state) {
   return {
-	  time: state.time
+	  time: state.clockReducer.time
   }
 }
 

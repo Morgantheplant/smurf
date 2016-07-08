@@ -9,7 +9,6 @@ import mainAnimationLoop from '../mainAnimationLoop';
 
 var store = require('../reducers/rootStore').default;
 
-
 class Root extends React.Component {
    constructor (props) {
     super(props)
@@ -25,7 +24,6 @@ class Root extends React.Component {
   }
   componentDidMount(){
     mainAnimationLoop.start();
-    debugger
     mainAnimationLoop.setAnimationInterval(function(){
        store.dispatch(clockTick())
     }, 1000)    

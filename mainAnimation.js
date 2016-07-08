@@ -2,6 +2,8 @@ var Matter = require('matter-js');
 var surf = require('./data/surfData.json');
 var dataBuilder = require('./dataBuilder.js');
 var mainAnimationLoop = require('./mainAnimationLoop');
+var store = require('./reducers/rootStore').default;
+var hoverDay =  require('./actions/clockActions').hoverDay;
 
 var World = Matter.World,
 Bodies = Matter.Bodies,
@@ -16,6 +18,7 @@ Constraint = Matter.Constraint;
 var svgns = "http://www.w3.org/2000/svg";
 var ary = dataBuilder(surf)
 
+//width and height of svg elements
 var width = 43;
 var height = 20;
 var padding = 3;
@@ -26,17 +29,9 @@ var Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies;
 
-// todo: encapsulate physics engine into Singleton module 
-//and rename engine to currentEngine so it can be tracked
-// and cleared if it already exists
-// possibly move this into its own component
-var engine = Engine.create();
-// http://brm.io/matter-js/docs/classes/Engine.html
-// Matter.Engine.clear(engine);
+var engine; 
 var svgBG = document.getElementById('world');
-var text = document.getElementById('text-container').children;
-var dateHeading = document.getElementById('date');
-
+var matterEngine;
 var svgBods = [];
 var svgBoxDims = svgBG.getBoundingClientRect();
 var yCoord = svgBoxDims - height;
@@ -45,7 +40,25 @@ var physicsBodies = [];
 var vertSprings = [];
 var horzSprings = [];
 var svgBars = [];
-function createBodies(days){ 
+
+function reset(){
+  mainAnimationLoop.removeAnimation(matterEngine);
+  mainAnimationLoop.removeAnimation(render);
+  physicsBodies = [];
+  vertSprings = [];
+  horzSprings = [];
+}
+
+function createBodies(days){
+  
+  if(engine){
+    Engine.clear(engine);
+    reset();
+  }
+
+  engine = Engine.create();
+
+
   for (var i = 0; i < days.length; i++) {
     //create top SVG element
     var hasTopElement = svgBods[i]
@@ -111,6 +124,7 @@ function createBodies(days){
         this.setAttributeNS(null, 'fill','#0c9fd5');
         var day = days[this.index]
         svgBars[this.index].setAttributeNS(null, 'fill', '#24c1f8');
+        store.dispatch(hoverDay(this.index))
         //todo: add call
         // text[0].innerText = day.dayOfWeek + ' ' + day.date
         // text[1].innerText = day.surfText;
@@ -127,7 +141,7 @@ function createBodies(days){
     baseSVG.addEventListener('mouseover', mouseOverEvent.bind(rect));
     
     function mouseOutEvent(){
-        var fColor = (this.index === highlighted)?initHighlight : initColor;
+        var fColor = (this.index === highlighted)? initHighlight : initColor;
         this.setAttributeNS(null, 'fill',fColor);
          svgBars[this.index].setAttributeNS(null, 'fill', fColor);
 
@@ -179,19 +193,29 @@ module.exports = function startSim(){
   if(!called){
     svgBG.style.opacity = 1;
     document.getElementsByClassName('led_clock_container')[0].style.opacity = 1;
-    mainAnimationLoop.setAnimationTimeout(function(){
+    startViz();
+    called = startViz;
+    
+    // mainAnimationLoop.setAnimationInterval(function(){
+    //    console.log("started second anim");
+    //    startViz(ary.reverse());
+    // }, 3000)
+  }
+   
+}
+
+function startViz(viz){
+  var sim = viz || ary;
+  mainAnimationLoop.setAnimationTimeout(function(){
       createBodies(ary);
       engine.world.gravity.y = -0.1;
       World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));
       // // run the engine
-      function matterEngine(){
+      matterEngine = function matterEngine(){
         Engine.update(engine, 1000 / 60)
       }
       mainAnimationLoop.addAnimation(matterEngine);
       mainAnimationLoop.addAnimation(render);
     },100);
-    called = true;
-  }
-   
 }
 
