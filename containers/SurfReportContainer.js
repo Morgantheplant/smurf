@@ -7,7 +7,6 @@ var surf = require('../data/surfData.json');
 var dataBuilder = require('../dataBuilder.js');
 
 var ary = dataBuilder(surf)
-console.log(ary)
 
 class SurfReportContainer extends React.Component {
    constructor (props) {

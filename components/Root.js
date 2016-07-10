@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import ClockContainer from '../containers/ClockContainer'
 import { connect } from 'react-redux';
 import { clockTick } from '../actions/clockActions'
-import Tides from './Tides'
+import TidesContainer from '../containers/TidesContainer'
 import SurfReportContainer from '../containers/SurfReportContainer'
 import mainAnimationLoop from '../mainAnimationLoop';
 
@@ -16,7 +16,7 @@ class Root extends React.Component {
   render () {
     return (
       <div>
-        <Tides /> 
+        <TidesContainer /> 
         <ClockContainer />
         <SurfReportContainer />
       </div>

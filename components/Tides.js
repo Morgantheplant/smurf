@@ -24,7 +24,6 @@ let lowestData = {};
 let specialTides = [];
 let sunriseSunset = [];
 let targetDays = [];
-let targetDayIndex = 0;
 
 tidesArray.forEach(function(item, index){
   let time = new Date(item.time * 1000);
@@ -65,21 +64,23 @@ class Tides extends React.Component {
     this.changeToStart = this.changeToStart.bind(this);
   }
   
-  componentDidMount() {
+  componentWillReceiveProps() {
+    let context = this.refs.tidesCanvas.getContext('2d');
+    context.clearRect(0, 0, width, height);
     this.updateCanvas();
   }
 
   changeDay(){
-    if(targetDayIndex < targetDays.length-2){
+    if(this.props.targetIndex < targetDays.length-2){
       let context = this.refs.tidesCanvas.getContext('2d');
       context.clearRect(0, 0, width, height);
-      targetDayIndex++;
+      this.props.targetIndex++;
       this.updateCanvas();
     }
   }
 
   changeToStart(){
-    if(targetDayIndex > 0){
+    if(this.props.targetIndex > 0){
       this.changeDayBack();
       setTimeout(function(){
         this.changeToStart()
@@ -88,22 +89,26 @@ class Tides extends React.Component {
   }
 
   changeDayBack(){
-    if(targetDayIndex > 0){
+    if(this.props.targetIndex > 0){
       let context = this.refs.tidesCanvas.getContext('2d');
       context.clearRect(0, 0, width, height);
-      targetDayIndex--;
+      this.props.targetIndex--;
       this.updateCanvas();
     }
   }
   
   updateCanvas() {
-    const cx = this.refs.tidesCanvas.getContext('2d');
+    const canvas = this.refs.tidesCanvas;
+    const cx = canvas.getContext('2d');
+    cx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = 1;
+    canvas.width = width;
     cx.beginPath();
     cx.moveTo(0,height);
     let newSunState = [];
     let newTideState = [];
     tidesArray.forEach(function(item, index){
-      if(item.day === targetDays[targetDayIndex]){
+      if(item.day === targetDays[this.props.targetIndex]){
         // find highest and lowest tide values
         // possibly use to calibrate chart
         //
@@ -132,7 +137,7 @@ class Tides extends React.Component {
           }
         }
       }
-    });
+    }.bind(this));
 
     cx.lineTo(width, height);
     cx.lineTo(0,height);
@@ -189,6 +194,7 @@ class Tides extends React.Component {
   }
 
   render () {
+
     return (
       <div className="tides-container" 
         style={ {width: width + "px", height: height + "px"} } >
