@@ -12,7 +12,7 @@ var startSim = require('./mainAnimation');
 var store = require('./reducers/rootStore').default;
 
 window.initMap = map;
-setTimeout(startSim, 1000)
+//setTimeout(startSim, 1000)
 render((
   <Provider store={store}>
     <Router history={ browserHistory }>

@@ -14,7 +14,8 @@ let width = 200;
 let height = 100;
 let lineColors = "gray";
 let labelColors = "white";
-let nightShade = "rgba(0,0,0,0.5)";
+// todo: possibly remove this
+let nightShade = "rgb(0,0,0)";
 let days = 1;
 let dayRange = (days * 23);
 let highest = 0;
@@ -30,9 +31,10 @@ tidesArray.forEach(function(item, index){
   let dayOfMonth = time.getDate();
   let hour = time.getHours();
   let minutes = time.getMinutes();
-  let amPm = (hour < 12) ? "am" : "pm";
-  let hrFormated = (hour < 12) ? hour : hour - 12;
-  item.readAbleTime = hrFormated + ":" + minutes + amPm;
+  let amPm = (hour < 12) ? " am" : " pm";
+  let hrFormatted = (hour < 12) ? hour : hour - 12;
+  let minutesFormatted = (minutes < 10) ? "0" + minutes : minutes;
+  item.readAbleTime = hrFormatted + ":" + minutesFormatted + amPm;
   item.timeData = hour + (minutes/60);
   item.rangeX = normalizeRange(0,width,0,dayRange,item.timeData, time, hour);
   item.rangeY = normalizeRange(0,height,8,-4,item.height, time, hour);
@@ -59,9 +61,6 @@ class Tides extends React.Component {
       specialTides:[],
       showLabels:false
     }
-    this.changeDay = this.changeDay.bind(this);
-    this.changeDayBack = this.changeDayBack.bind(this);
-    this.changeToStart = this.changeToStart.bind(this);
   }
   
   componentWillReceiveProps() {
@@ -70,33 +69,6 @@ class Tides extends React.Component {
     this.updateCanvas();
   }
 
-  changeDay(){
-    if(this.props.targetIndex < targetDays.length-2){
-      let context = this.refs.tidesCanvas.getContext('2d');
-      context.clearRect(0, 0, width, height);
-      this.props.targetIndex++;
-      this.updateCanvas();
-    }
-  }
-
-  changeToStart(){
-    if(this.props.targetIndex > 0){
-      this.changeDayBack();
-      setTimeout(function(){
-        this.changeToStart()
-      }.bind(this),50)
-    }
-  }
-
-  changeDayBack(){
-    if(this.props.targetIndex > 0){
-      let context = this.refs.tidesCanvas.getContext('2d');
-      context.clearRect(0, 0, width, height);
-      this.props.targetIndex--;
-      this.updateCanvas();
-    }
-  }
-  
   updateCanvas() {
     const canvas = this.refs.tidesCanvas;
     const cx = canvas.getContext('2d');
@@ -107,19 +79,10 @@ class Tides extends React.Component {
     cx.moveTo(0,height);
     let newSunState = [];
     let newTideState = [];
+    this.addHighLowTides(cx)
+    //possibly change to for loop
     tidesArray.forEach(function(item, index){
       if(item.day === targetDays[this.props.targetIndex]){
-        // find highest and lowest tide values
-        // possibly use to calibrate chart
-        //
-        // if(item.height > highest){
-        //   highest = item.height;
-        //   highestData = item;
-        // } 
-        // if(item.height < lowest){
-        //   lowest = item.height;
-        //   lowestData = item;
-        // }
         if(item.type === "NORMAL"){
           cx.lineTo(item.rangeX, item.rangeY)
         } else {
@@ -151,19 +114,6 @@ class Tides extends React.Component {
       sunriseSunset: newSunState,
       specialTides: newTideState
     })
-
-    //this.buildBoard(cx);
-    this.addHighLowTides(cx)
-  }
-
-  buildBoard(cx){
-    // line across
-    cx.beginPath();
-    cx.moveTo(0,height/2);
-    cx.lineTo(width, height/2);
-    cx.strokeStyle=lineColors;
-    cx.closePath();
-    cx.stroke();
   }
 
   addHighLowTides(cx){
@@ -175,37 +125,19 @@ class Tides extends React.Component {
          cx.stroke();
         }
         if(item.type == "Sunset"){
-          cx.fillStyle = nightShade; 
+          cx.fillStyle = "nightShade"; 
          cx.fillRect(item.rangeX,0,width-item.rangeX,height);
          cx.stroke();
         }
     })
-    
-    //change this to label elements
-    // specialTides.forEach(function(item, index){
-    //     cx.font="12px Verdana black";
-    //     cx.fillStyle = "white"
-    //     let label1 = item.type.slice(0,1) +": "+ item.height;
-    //     let label2 = item.readAbleTime;
-    //     cx.fillText(label1,item.rangeX - 10,item.rangeY);
-    //     cx.fillText(label2,item.rangeX - 10,item.rangeY+12);
-    //     //sunrise and sunset lines 
-    // })
   }
 
   render () {
-
     return (
       <div className="tides-container" 
         style={ {width: width + "px", height: height + "px"} } >
         <canvas  ref="tidesCanvas" width={width} height={height}/>
          { this.state.specialTides.map(this._createLabels, this) }
-         <button style={{position:"absolute", left: "0px",top:height + 20 + "px"}}
-           onClick={this.changeDay}
-         >day forward</button>
-         <button style={{position:"absolute", left: "100px",top:height + 20 + "px"}}
-           onClick={this.changeToStart}
-         >day back</button>
       </div>)
   }
 
