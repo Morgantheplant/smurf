@@ -83,13 +83,6 @@ function createBodies(days){
       baseSVG.setAttributeNS(null, 'fill', fColor);
       baseSVG.setAttributeNS(null, 'x', xCoord);
       baseSVG.setAttributeNS(null, 'class', "base_svg");
-      //baseSVG.style.transform = "rotate(180)"
-      //baseSVG.setAttributeNS(null, 'y', 50);
-      // baseSVG.setAttributeNS(null, 'x1', xCoord + width/2)
-      // baseSVG.setAttributeNS(null, 'y1', svgBoxDims.height)
-      // baseSVG.setAttributeNS(null, 'stroke', "#08304B")
-      // baseSVG.setAttributeNS(null, 'stroke-width', 1)
-      // baseSVG.setAttributeNS(null, 'x2',xCoord + width/2)
     if(!hasBaseElement){
       svgBG.appendChild(baseSVG);
       svgBars[i] = baseSVG;
@@ -115,25 +108,10 @@ function createBodies(days){
     rect.physicsBody = physicsBody;
     
     function mouseOverEvent(){
-        // this.setAttributeNS(null, 'height', );
-        // this.setAttributeNS(null, 'width', '30');
-        // this.style.transform = "translate(-15%,-40%)"
-        // todo: refactor DOM elements into component and 
-        // dispatch events from here 
-        
         this.setAttributeNS(null, 'fill','#0c9fd5');
         var day = days[this.index]
         svgBars[this.index].setAttributeNS(null, 'fill', '#24c1f8');
         store.dispatch(hoverDay(this.index))
-        //todo: add call
-        // text[0].innerText = day.dayOfWeek + ' ' + day.date
-        // text[1].innerText = day.surfText;
-        // text[1].style.fontWeight = "bold";
-        // text[1].style.marginBottom = "10px"
-        // text[2].innerText = "Surf Conditions: " + day.generalCondition;
-        // text[3].innerText = "Surf Max: " +  day.surfMax + " Surf min:" + day.surfMin
-        // text[4].innerText = day.generalText;
-        // text[4].style.marginTop = "20px"
       }
 
     rect.addEventListener('mouseover', mouseOverEvent.bind(rect));
@@ -148,9 +126,6 @@ function createBodies(days){
         Body.setVelocity(physicsBodies[this.index], {x:0,y:-5}, {x:0.000,y:0.001});
         this.setAttributeNS(null, 'height', height);
         this.setAttributeNS(null, 'width', width);
-        //todo: dispatch event from here
-        //this.style.transform = "translate(0%,0%)"
-        //this.style.color = initColor;
     }
 
     baseSVG.addEventListener('click', function(){
@@ -169,11 +144,6 @@ function createBodies(days){
   }
 }
 
-// todo: make render loop extensible
-// add render queue and pass in highresTimestamp
-// add ability to queue and dequeue animations
-// remove setTimeout for clock
-
 function render() {
   var bodies = Composite.allBodies(engine.world);
   var constraints = Composite.allConstraints(engine.world);
@@ -189,11 +159,11 @@ function render() {
 };
 
 var called = false;
-module.exports = function startSim(){ 
+module.exports = function startSim(viz){ 
   if(!called){
     svgBG.style.opacity = 1;
     document.getElementsByClassName('led_clock_container')[0].style.opacity = 1;
-    startViz();
+    startViz(viz);
     called = startViz;
     
     // mainAnimationLoop.setAnimationInterval(function(){
@@ -206,7 +176,9 @@ module.exports = function startSim(){
 
 function startViz(viz){
   var sim = viz || ary;
+  debugger
   mainAnimationLoop.setAnimationTimeout(function(){
+      //create bodies will reset if already called
       createBodies(ary);
       engine.world.gravity.y = -0.1;
       World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));
