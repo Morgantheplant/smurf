@@ -1,10 +1,11 @@
-@mainColor: #007297;
+@mainColor: #fff;
+
 
 .led_clock_container{
   position: absolute;
   background: rgba(0,0,0,0.5);
-  top:0px;
-  left:20px;  
+  top:-20px;
+  left:50%;  
   height:110px;
   width:385px;
   display:flex;
@@ -14,7 +15,8 @@
   display: -webkit-flex;     
   opacity: 0;
   transition: opacity 1s;
-  margin: 2em auto;
+  margin-left: -192.5px;
+  transform:scale(.25);
    #PMtext {
     color:white;
   }

@@ -1,12 +1,22 @@
+@import "styles/elements";
+
+//////////////
+//colors
+//////////////
+
+@highlightColor:         #39e4fd;
+@blueBgColor:            rgba(21, 106, 162, 0.40);
+@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
 
 .tides-container{
     position:absolute;
-    border: #007297; //1px solid rgba(167, 0, 0, 0.69);
-    box-shadow: 1px 1px 5px black;
-    top: 20px;
-    background: rgba(0, 0, 0, 0.41);
+    min-height:250px;
+    top: 10%;
+    padding:15px;
+    background: @blueBgColor;
     right: 20px;
     cursor:pointer;
+    .drop-shadow(0, 0, 100px, 0.2);
     &:hover > .label{
         opacity: 1;
     }
