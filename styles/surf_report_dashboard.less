@@ -1,25 +1,51 @@
-//////////////
-//colors
-//////////////
+@import "styles/elements";
 
-@highlightColor: #39e4fd;
-@blueBgColor: rgba(21, 106, 162, 0.40);
-@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
 
 //////////////
 // Icon files
 //////////////
 
 @filePath: "http://nolantheplant.com/DROP/";
-@goodConditionsIcon: "smile.png";
-@fairConditionsIcon: "smile.png";
-@badConditionsIcon: "smile.png";
-@goodConditionsIconWt: "smile.png";
-@fairConditionsIconWt: "smile.png";
-@badConditionsIconWt: "smile.png";
-@windIcon: "wind-icon.png";
-@risingTideIcon: "tide-icon.png";
-@droppingTideIcon: "tide-icon.png";
+@goodConditionsIcon:     "smile.png";
+@fairConditionsIcon:     "smile.png";
+@badConditionsIcon:      "smile.png";
+@goodConditionsIconWt:   "smile.png";
+@fairConditionsIconWt:   "smile.png";
+@badConditionsIconWt:    "smile.png";
+@windIcon:               "wind-icon.png";
+@risingTideIcon:         "tide-icon.png";
+@droppingTideIcon:       "tide-icon.png";
+
+@highlightColor:         #39e4fd;
+@blueBgColor:            rgba(21, 106, 162, 0.40);
+@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
+
+//////////////
+//colors
+//////////////
+
+@highlightColor:         #39e4fd;
+@blueBgColor:            rgba(21, 106, 162, 0.40);
+@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
+
+///////////
+//Settings
+///////////
+
+@mainSize:   800px;
+
+
+#react-container{
+  position:absolute;
+  top:20px;
+  width: @mainSize;
+  height:@mainSize;
+  left:50%;
+  margin-left: (@mainSize / -2);
+  background: @blueBgColor;
+  .rounded(50%);
+  .drop-shadow(0, 0, 200px, 0.75);
+}
 
 
 div#firstReport {
@@ -66,19 +92,19 @@ h4 {
 .topBoxes {
   background: rgba(21, 106, 162, 0.40);
   padding: 15px 30px;
-  box-shadow: 10px 5px 80px rgba(0, 0, 0, .35);
+  .drop-shadow(0, 0, 100px, 0.5);
   min-height: 250px;
   text-align: center
 }
 
 #firstReport {
   .topBoxes;
+  .transition(.25s, ease-out);
   position: absolute;
   top: 10%;
   left: 0;
-  width: 60%;
+  width: 58%;
   color: #fff;
-  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 200;
   h2 {
     font-size: 125px;
