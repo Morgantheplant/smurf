@@ -1,12 +1,13 @@
+import { browserHistory } from 'react-router'
 var API_KEY = require('./config.js');
 var styles = require('./styles/mapstyles.js');
-var startSim = require('./mainAnimation');
 // todo load this from separate data source
-let surfSpots = [{spot: "ob",lat: 37.809, lng: -122.500}, {spot: "sc",lat: 36.950127, lng: -122.026017}, {spot: "bigsur",lat: 36.29649, lng: -121.889544}, {spot: "morro",lat: 35.371313, lng: -120.869593}, {spot: "rincon",lat: 34.372669, lng: -119.447469}, {spot: "la",lat: 34.000145, lng: -118.804716}]
+let surfSpots = require('./data/surfSpots');
+//let surfSpots = [{spot: "ob",lat: 37.809, lng: -122.500}, {spot: "sc",lat: 36.950127, lng: -122.026017}, {spot: "bigsur",lat: 36.29649, lng: -121.889544}, {spot: "morro",lat: 35.371313, lng: -120.869593}, {spot: "rincon",lat: 34.372669, lng: -119.447469}, {spot: "la",lat: 34.000145, lng: -118.804716}]
 
 module.exports = function map() {
   var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 34.290647, lng: -124.065839},
+    center: {"lat": 37.809, "lng": -122.500},
     disableDefaultUI: true,
     zoom: 6
   });
@@ -41,9 +42,13 @@ function addSpotMarker(loc,map){
   });
   spot.addListener('click', function() {
     map.setZoom(6);
+    let loaded = false;
     map.panTo(spot.getPosition());
     map.addListener('tilesloaded', function(){
-      startSim(spot.spot)
+      if(!loaded){
+        loaded = true;
+        browserHistory.push(loc.spot)
+      }
     })
   })       
 }

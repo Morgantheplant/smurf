@@ -18,6 +18,8 @@ render((
     <Router history={ browserHistory }>
       <Route path="/" component={ Root }>
       </Route>  
+      <Route path="/:surfspot" component={ Root }>
+      </Route>
     </Router>
   </Provider>  
 ), document.querySelector('#react-container'));

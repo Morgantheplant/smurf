@@ -6,6 +6,7 @@ import { clockTick } from '../actions/clockActions'
 import TidesContainer from '../containers/TidesContainer'
 import SurfReportContainer from '../containers/SurfReportContainer'
 import mainAnimationLoop from '../mainAnimationLoop';
+import startSim from '../mainAnimation';
 
 var store = require('../reducers/rootStore').default;
 
@@ -16,17 +17,27 @@ class Root extends React.Component {
   render () {
     return (
       <div>
-        <TidesContainer /> 
-        <ClockContainer />
-        <SurfReportContainer />
+        {
+          (this.props.params.surfspot ?
+            (<div>
+            <TidesContainer /> 
+            <ClockContainer />
+            <SurfReportContainer />
+          </div>) :null) 
+        } 
       </div>
-      )
+    )
   }
   componentDidMount(){
     mainAnimationLoop.start();
     mainAnimationLoop.setAnimationInterval(function(){
        store.dispatch(clockTick())
     }, 1000)    
+  }
+  componentWillReceiveProps(){
+    if(this.props.params.surfspot){
+      startSim(this.props.params.surfspot);
+    }
   }
  
 }
