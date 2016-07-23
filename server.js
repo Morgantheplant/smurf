@@ -22,6 +22,7 @@ app.get('forecast/:spot', function(req, res) {
       center = [location.lat,location.lng].join(",")
     }
   }
+  // cannot add lat long to url route.. possibly add to global
  // res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
 });
