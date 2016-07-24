@@ -14,22 +14,25 @@ app.get('/', function(req, res) {
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
 });
 
-app.get('forecast/:spot', function(req, res) {
+app.get('/bundle.js', function(req,res){
+  res.sendFile(__dirname + '/public/bundle.js');
+})
+app.get('/styles.min.css', function(req, res){
+   res.sendFile(__dirname + '/public/styles.min.css');
+})
+app.use(express.static(__dirname + '/public/images'));
+
+app.get('/:spot', function(req, res) {
   //todo: add support for routes, right now /:spot gets static bundle and css assets
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
     if(location.spot === req.params){
       center = [location.lat,location.lng].join(",")
+      break;
     }
   }
-  // cannot add lat long to url route.. possibly add to global
- // res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
 });
-
-app.use(express.static(__dirname + '/public'));
-//app.use(express.static(__dirname + '/public/images'));
-
 
 http.listen(port, function(){
     console.log('Listening on port '+ port);

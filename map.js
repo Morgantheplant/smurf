@@ -44,9 +44,11 @@ function addSpotMarker(loc,map){
     map.setZoom(6);
     let loaded = false;
     map.panTo(spot.getPosition());
-    map.addListener('tilesloaded', function(){
+    map.addListener('bounds_changed', function(){
+      console.log(loaded)
       if(!loaded){
         loaded = true;
+        console.log(loc.spot)
         browserHistory.push(loc.spot)
       }
     })

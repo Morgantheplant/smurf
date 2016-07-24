@@ -162,21 +162,16 @@ var called = false;
 module.exports = function startSim(viz){ 
   if(!called){
     svgBG.style.opacity = 1;
+    svgBG.style.visibility = "visible";
     document.getElementsByClassName('led_clock_container')[0].style.opacity = 1;
     startViz(viz);
     called = startViz;
-    
-    // mainAnimationLoop.setAnimationInterval(function(){
-    //    console.log("started second anim");
-    //    startViz(ary.reverse());
-    // }, 3000)
   }
    
 }
 
 function startViz(viz){
   var sim = viz || ary;
-  debugger
   mainAnimationLoop.setAnimationTimeout(function(){
       //create bodies will reset if already called
       createBodies(ary);
