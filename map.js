@@ -5,29 +5,38 @@ var styles = require('./styles/mapstyles.js');
 let surfSpots = require('./data/surfSpots');
 //let surfSpots = [{spot: "ob",lat: 37.809, lng: -122.500}, {spot: "sc",lat: 36.950127, lng: -122.026017}, {spot: "bigsur",lat: 36.29649, lng: -121.889544}, {spot: "morro",lat: 35.371313, lng: -120.869593}, {spot: "rincon",lat: 34.372669, lng: -119.447469}, {spot: "la",lat: 34.000145, lng: -118.804716}]
 
-module.exports = function map() {
-  var map = new google.maps.Map(document.getElementById('map'), {
+function Map() {
+  this.locations = [];
+  this.loaded = false;
+}
+
+Map.prototype.initMap = function initMap(){
+  this.map = new google.maps.Map(document.getElementById('map'), {
     center: {"lat": 37.809, "lng": -122.500},
     disableDefaultUI: true,
     zoom: 6
   });
-  map.loaded = false;
-  map.setOptions({styles: styles});
-  map.addListener('tilesloaded', function(){
-    if(!map.loaded){
-      map.loaded = true;
+  this.map.setOptions({styles: styles});
+  this.map.addListener('tilesloaded', function(){
+    if(!this.loaded){
+      this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
         let spot = surfSpots[i];
         setTimeout(function(){
-          addSpotMarker(spot, map)
-        },i * 100);
+          this.addSpotMarker(spot)
+        }.bind(this),i * 100);
       }
     }
-
-  });
+  }.bind(this));
+  //assign instance to global 
+  window.initMap.mapInstance = this;
 }
 
-function addSpotMarker(loc,map){
+Map.prototype.getMap = function getMap(){
+  return this.map;
+}
+
+Map.prototype.addSpotMarker = function addSpotMarker(loc){
   let spot = new google.maps.Marker({ 
     position: { lat:loc.lat, lng:loc.lng},
     icon: {
@@ -38,19 +47,23 @@ function addSpotMarker(loc,map){
       strokeWeight: 0
     },
     animation: google.maps.Animation.DROP,
-    map: map
+    map: this.map
   });
+  spot.details = loc;
   spot.addListener('click', function() {
-    map.setZoom(6);
-    let loaded = false;
-    map.panTo(spot.getPosition());
-    map.addListener('bounds_changed', function(){
-      console.log(loaded)
-      if(!loaded){
-        loaded = true;
-        console.log(loc.spot)
-        browserHistory.push(loc.spot)
-      }
-    })
-  })       
+    this.map.setZoom(6);
+    browserHistory.push(loc.spot)
+  }.bind(this));
+  this.locations.push(spot);       
 }
+
+Map.prototype.changeLoc = function changeLoc(loc){
+  let spot = this.locations.filter(function(item){
+    return item.details && item.details.spot === loc;
+  })
+  if(spot.length){
+    this.map.panTo(spot[0].getPosition());
+  }
+}
+
+module.exports = Map;
