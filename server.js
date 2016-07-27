@@ -8,10 +8,10 @@ var surfSpots = require('./data/surfSpots');
 app.engine('.hbs', exphbs({ extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-var center = "34.290647,-124.065839";
+var center = { lat: 34.290647, lng:-124.065839};
 
 app.get('/', function(req, res) {
-  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
+  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), root: true });
 });
 
 app.get('/bundle.js', function(req,res){
@@ -27,11 +27,14 @@ app.get('/:spot', function(req, res) {
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
     if(location.spot === req.params){
-      center = [location.lat,location.lng].join(",")
+      center = { 
+        lat: location.lat, 
+        lng: location.lng 
+      };
       break;
     }
   }
-  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: center });
+  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), root: false });
 });
 
 http.listen(port, function(){

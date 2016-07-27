@@ -12,7 +12,7 @@ function Map() {
 
 Map.prototype.initMap = function initMap(){
   this.map = new google.maps.Map(document.getElementById('map'), {
-    center: {"lat": 37.809, "lng": -122.500},
+    center: window._INITIAL_SETTINGS_.center,
     disableDefaultUI: true,
     zoom: 6
   });
