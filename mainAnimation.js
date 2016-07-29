@@ -1,5 +1,5 @@
 var Matter = require('matter-js');
-var surf = require('./data/surfData.json');
+var surf = require('./data');
 var dataBuilder = require('./dataBuilder.js');
 var mainAnimationLoop = require('./mainAnimationLoop');
 var store = require('./reducers/rootStore').default;
@@ -16,7 +16,7 @@ Constraint = Matter.Constraint;
 
 
 var svgns = "http://www.w3.org/2000/svg";
-var ary = dataBuilder(surf)
+var ary = dataBuilder(surf.ob)
 
 //width and height of svg elements
 var width = 43;
@@ -171,7 +171,9 @@ module.exports = function startSim(viz){
 }
 
 function startViz(viz){
-  var sim = viz || ary;
+
+  var sim = (viz && surf[viz]) ? dataBuilder(surf[viz]) : ary;
+  
   mainAnimationLoop.setAnimationTimeout(function(){
       //create bodies will reset if already called
       createBodies(ary);

@@ -1,6 +1,7 @@
 import { browserHistory } from 'react-router'
 var API_KEY = require('./config.js');
 var styles = require('./styles/mapstyles.js');
+var startSim = require('./mainAnimation.js')
 // todo load this from separate data source
 let surfSpots = require('./data/surfSpots');
 //let surfSpots = [{spot: "ob",lat: 37.809, lng: -122.500}, {spot: "sc",lat: 36.950127, lng: -122.026017}, {spot: "bigsur",lat: 36.29649, lng: -121.889544}, {spot: "morro",lat: 35.371313, lng: -120.869593}, {spot: "rincon",lat: 34.372669, lng: -119.447469}, {spot: "la",lat: 34.000145, lng: -118.804716}]
@@ -17,7 +18,7 @@ Map.prototype.initMap = function initMap(){
     zoom: 6
   });
   this.map.setOptions({styles: styles});
-  this.map.addListener('tilesloaded', function(){
+  this.map.addListener('bounds_changed', function(){
     if(!this.loaded){
       this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
@@ -26,6 +27,9 @@ Map.prototype.initMap = function initMap(){
           this.addSpotMarker(spot)
         }.bind(this),i * 100);
       }
+    }
+    if(window._INITIAL_SETTINGS_.spot !== "root"){
+      startSim(window._INITIAL_SETTINGS_.spot)
     }
   }.bind(this));
   //assign instance to global 

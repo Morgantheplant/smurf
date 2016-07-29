@@ -34,14 +34,14 @@ class Root extends React.Component {
        store.dispatch(clockTick())
     }, 1000)    
   }
-  componentWillUpdate(){
+   componentWillReceiveProps(){
     let loc = this.props.params.surfspot;
     if(loc){
       let map = initMap.mapInstance;
-      map.changeLoc(loc)
       map.getMap().addListener('bounds_changed',function(){
         startSim(loc);
       })
+      map.changeLoc(loc)
     }
   }
  

@@ -8,10 +8,10 @@ var surfSpots = require('./data/surfSpots');
 app.engine('.hbs', exphbs({ extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-var center = { lat: 34.290647, lng:-124.065839};
+var center = {"lat": 37.309, "lng": -122.400};
 
 app.get('/', function(req, res) {
-  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), root: true });
+  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), spot:"root"});
 });
 
 app.get('/bundle.js', function(req,res){
@@ -24,9 +24,11 @@ app.use(express.static(__dirname + '/public/images'));
 
 app.get('/:spot', function(req, res) {
   //todo: add support for routes, right now /:spot gets static bundle and css assets
+  var spot;
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
     if(location.spot === req.params){
+      spot = location.spot
       center = { 
         lat: location.lat, 
         lng: location.lng 
@@ -34,7 +36,7 @@ app.get('/:spot', function(req, res) {
       break;
     }
   }
-  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), root: false });
+  res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), spot: spot });
 });
 
 http.listen(port, function(){
