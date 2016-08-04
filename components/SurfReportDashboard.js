@@ -9,18 +9,18 @@ class SurfReportDashboard extends React.Component {
     return (
     <div id="firstReport" classNames="topBoxes surfReport">
       <div className="waveHeight">
-        <h2 className="hoverHide">{this.props.surfHeightRange}</h2><span>ft</span>
+        <h2>{this.props.surfHeightRange}</h2><span>ft</span>
       </div>  
       <div className="conditionIcons">
         <ul>
-          <li>{this.props.conditionsText}</li>
-          <li className="hoverHide">3 knts SW</li>
-          <li className="hoverHide">Rising 12:00pm .7m</li>
+          <li><i></i>{this.props.conditionsText}</li>
+          <li><i></i>3 knts SW</li>
+          <li><i></i>Rising 12:00pm .7m</li>
           <li><span>Water : 72</span> <span>Air : 80</span></li>
         </ul>
       </div>
       <div className="clear"></div>
-      <p className="hoverHide">{this.props.forecaseSummaryText}</p>
+      <p>{this.props.forecaseSummaryText}</p>
     </div>
       )
   }

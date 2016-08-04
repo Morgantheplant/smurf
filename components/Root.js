@@ -20,9 +20,9 @@ class Root extends React.Component {
         {
           (this.props.params.surfspot ?
             (<div>
+            <ClockContainer />  
+            <SurfReportContainer />  
             <TidesContainer /> 
-            <ClockContainer />
-            <SurfReportContainer />
           </div>) :null) 
         } 
       </div>

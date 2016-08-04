@@ -1,22 +1,21 @@
-@import "styles/elements";
+@import 'styles/elements';
+@import 'styles/variables';
 
 //////////////
 //colors
 //////////////
 
-@highlightColor:         #39e4fd;
-@blueBgColor:            rgba(21, 106, 162, 0.40);
-@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
 
 .tides-container{
     position:absolute;
     min-height:250px;
     top: 10%;
     padding:15px;
-    background: @blueBgColor;
     right: 20px;
     cursor:pointer;
-    .drop-shadow(0, 0, 100px, 0.2);
+    background-color: fade(@elementBgColor, 80%);
+    .inner-outside-shadow(inset 0 0 200px @innerHighlightColor, 2px 5px 100px rgba(0, 0, 0, .30));
+    .transition(.25s, ease-out);
     &:hover > .label{
         opacity: 1;
     }
@@ -24,4 +23,12 @@
         opacity: 0;
         transition:.5s opacity;
     }
+     @media @mobileBreak{
+    top: 100%;    
+    max-width: 34%;
+    padding: 0;
+    right:0;
+    margin: 0;
+  }
+
 }

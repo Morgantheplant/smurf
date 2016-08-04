@@ -1,19 +1,18 @@
+@import 'styles/variables';
 @import 'styles/tides';
 @import 'styles/surf_report';
 @import 'styles/svg';
 @import 'styles/led_clock';
 @import 'styles/surf_report_dashboard';
 
-@mainSize:   800px;
-@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
-
 html, body {
-  background: rgb(21, 106, 162);
+  background:#e5e3df;
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family:sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight:200;
+  .box-shadow(inset 0 0 500px @innerHighlightColor);
 }
 
 #map {
@@ -22,9 +21,9 @@ html, body {
 
 #world {
   position: absolute;
-  top:25%;
+  top:50%;
   left: 50%;
-  margin-left: (@mainSize/-2);
+  margin: (@mainSize/-6) 0 0 (@mainSize/-2);
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -33,6 +32,12 @@ html, body {
   &:hover div{
   opacity:.5;
   }
+    @media @mobileBreak{
+    transform:scale(.25);
+    top:0;
+    left:0;
+    margin:0;
+    }
   }
 
 #text-container{

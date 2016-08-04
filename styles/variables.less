@@ -1,0 +1,19 @@
+@elementBgColor: #005483;
+@highlightColor: spin(lighten(@elementBgColor,  40%), -12);
+@elementBgHighlight: @highlightColor;
+@innerHighlightColor: spin(fade(@elementBgHighlight, 5%), -25);
+@mainSize:   800px;
+
+@mobileBreak: ~"(max-width: 767px)";
+
+//custom mixin for 2 showdows
+.inner-outside-shadow(@inner, @outter) {
+  -webkit-box-shadow: @inner, @outter;
+  -moz-box-shadow: @inner, @outter;
+  box-shadow: @inner, @outter;
+}
+
+//Shadowing for top elements
+.elementShadowDetails{
+	.inner-outside-shadow(inset 0 0 100px fade(@elementBgHighlight, 5%), 0 0 50px 1000px fade(shade(@elementBgColor, 40%), 50%));
+}

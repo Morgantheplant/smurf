@@ -58,7 +58,6 @@ function createBodies(days){
 
   engine = Engine.create();
 
-
   for (var i = 0; i < days.length; i++) {
     //create top SVG element
     var hasTopElement = svgBods[i]
@@ -164,6 +163,7 @@ module.exports = function startSim(viz){
     svgBG.style.opacity = 1;
     svgBG.style.visibility = "visible";
     document.getElementsByClassName('led_clock_container')[0].style.opacity = 1;
+    document.getElementById('react-container').className += "containerLoaded";
     startViz(viz);
     called = startViz;
   }

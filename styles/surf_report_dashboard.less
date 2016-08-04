@@ -1,51 +1,69 @@
-@import "styles/elements";
-
-
+@import 'styles/elements';
+@import 'styles/variables';
 //////////////
 // Icon files
 //////////////
 
 @filePath: "http://nolantheplant.com/DROP/";
-@goodConditionsIcon:     "smile.png";
-@fairConditionsIcon:     "smile.png";
-@badConditionsIcon:      "smile.png";
-@goodConditionsIconWt:   "smile.png";
-@fairConditionsIconWt:   "smile.png";
-@badConditionsIconWt:    "smile.png";
-@windIcon:               "wind-icon.png";
-@risingTideIcon:         "tide-icon.png";
-@droppingTideIcon:       "tide-icon.png";
-
-@highlightColor:         #39e4fd;
-@blueBgColor:            rgba(21, 106, 162, 0.40);
-@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
-
-//////////////
-//colors
-//////////////
-
-@highlightColor:         #39e4fd;
-@blueBgColor:            rgba(21, 106, 162, 0.40);
-@blueTransparentBgColor: rgba(1, 73, 113, 0.25);
-
-///////////
-//Settings
-///////////
-
-@mainSize:   800px;
+@goodConditionsIcon: "good.svg";
+@fairConditionsIcon: "fair.svg";
+@badConditionsIcon: "bad.svg";
+@windIcon: "wind.svg";
+@risingTideIcon: "rising-tide.svg";
+@droppingTideIcon: "falling-tide.svg";
 
 
-// #react-container{
-//   position:absolute;
-//   top:20px;
-//   width: @mainSize;
-//   height:@mainSize;
-//   left:50%;
-//   margin-left: (@mainSize / -2);
-//   background: @blueBgColor;
-//   .rounded(50%);
-//   .drop-shadow(0, 0, 200px, 0.75);
-// }
+///defualt states for intro animations
+.tides-container, #react-container, #firstReport{
+.opacity(0);
+.scale(.75);
+}
+
+#react-container {
+  position: absolute;
+  top: 50%;
+  width: @mainSize;
+  height: @mainSize;
+  max-width: 100%;
+  left: 50%;
+  margin: (@mainSize / -2) 0 0 (@mainSize / -2);
+  background-color: fade(@elementBgColor, 40%);
+  .scale(0);
+  .rounded(50%);
+  .transition(.5s, ease);
+
+  //This animates the components that are loaded in
+  
+  &.containerLoaded{
+  .scale(1);
+  .opacity(1);
+  .inner-outside-shadow(2px 5px 100px rgba(0, 0, 0, .30), 0 0 50px 1000px fade(shade(@elementBgColor, 65%), 75%));
+     
+     #firstReport{
+      transition-delay:.5s;
+      .scale(1);
+      .opacity(1);
+      .inner-outside-shadow(inset 0 0 200px @innerHighlightColor, 2px 5px 100px rgba(0, 0, 0, .30));
+      background-color: fade(@elementBgColor, 80%);
+      }
+
+      .tides-container{
+      #firstReport();  
+      transition-delay:.65s;
+      }
+   
+
+   }
+  //mobile styling
+  @media @mobileBreak{
+    top:0;
+    width: 100%;
+    height: auto;
+    left: 0;
+    margin: 0 0 0 0;
+    padding-bottom: 100%;
+  }
+}
 
 
 div#firstReport {
@@ -83,23 +101,19 @@ h4 {
   float: left;
   width: 50%;
   display: inline-block;
-}
-
-///////////////
-//topBox mixin
-///////////////
-
-.topBoxes {
-  background: rgba(21, 106, 162, 0.40);
-  padding: 15px 30px;
-  .drop-shadow(0, 0, 100px, 0.5);
-  min-height: 250px;
-  text-align: center
+  @media @mobileBreak{
+    width: 100%;
+    text-align: left;
+  }
 }
 
 #firstReport {
-  .topBoxes;
+  background-color: fade(@elementBgColor, 20%);
   .transition(.25s, ease-out);
+  cursor: pointer;
+  padding: 15px 30px;
+  min-height: 250px;
+  text-align: center;
   position: absolute;
   top: 10%;
   left: 0;
@@ -111,39 +125,59 @@ h4 {
     display: inline-block;
     margin: 0;
     padding: 0;
+    @media @mobileBreak{
+    font-size: 80px;
+    text-align: left;
+    }
   }
   p {
     margin-top: 0;
     border-top: 2px solid @highlightColor;
     padding-top: 10px;
     text-align: justify;
+    @media @mobileBreak{
+      text-align: left;
+    }
   }
   ul {
     list-style: none;
     padding-top: 10px;
+    text-transform: capitalize;
+    @media @mobileBreak{
+      font-size: 14px;
+      padding-left: 0;
+    }
     li {
-      padding: 0 0 0 30px;
       margin: 5px 0;
       transition: all .5s ease;
-      &:first-child {
+      i{
+        width:15px;
+        height:15px;
+        display:inline-block;
+        margin-right: 5px;
+      }
+      &:first-child i{
         background: url("@{filePath}@{goodConditionsIcon}") no-repeat;
-        background-size: contain;
+        background-size: cover;
+        fill:red;
       }
-      &:nth-child(2) {
+      &:nth-child(2) i{
         background: url("@{filePath}@{windIcon}") no-repeat;
-        background-size: contain;
-        padding-left: 30px;
+        background-size: cover;
       }
-      &:nth-child(3) {
+      &:nth-child(3) i{
         background: url("@{filePath}@{risingTideIcon}") no-repeat;
-        background-size: contain;
-        padding-left: 30px;
+        background-size: cover;
       }
       span {
-        margin-left: -30px;
-        margin-right: 40px;
+        margin-right: 10px;
       }
     }
+  }
+  @media @mobileBreak{
+    top: 100%;
+    width: 56%;
+    padding: 5px 4%;
   }
 }
 

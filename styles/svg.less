@@ -1,20 +1,13 @@
+@import 'styles/elements';
+@import 'styles/variables';
 
-//////////////
-//colors
-//////////////
-
-@highlightColor:         #39e4fd;
-@blueBgColor:            rgba(21, 106, 162, 0.40);
 
 .base_svg, .tip_svg{
-  fill: @blueBgColor;	
+  fill: fade(lighten(@elementBgColor, 5%), 80%);	
   cursor: pointer;
   &:hover{fill: @highlightColor; }
-  &:hover.tip_svg{fill: @highlightColor;}
+  &:hover.tip_svg{fill: #fff;}
 }
 
-.tip_svg:hover{
-	fill: white;
-}
 
 
