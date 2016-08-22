@@ -1,9 +1,9 @@
 var ob = require('./oceanBeach'),
 sc = require('./santaCruz'),
-bigsur = require('./oceanSide'),
+bigsur = require('./bigSur'),
 morro = require('./morroBeach'),
-rincon = require('./surfData'),
-la = require('./pointLoma');
+rincon = require('./rincon'),
+la = require('./losAngeles');
 
 
 module.exports = {

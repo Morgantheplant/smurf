@@ -163,20 +163,18 @@ module.exports = function startSim(viz){
   if(!called){
     svgBG.style.opacity = 1;
     svgBG.style.visibility = "visible";
-    document.getElementsByClassName('led_clock_container')[0].style.opacity = 1;
-    startViz(viz);
-    called = startViz;
+    called = true;
   }
-   
+  startViz(viz);
 }
 
 function startViz(viz){
 
   var sim = (viz && surf[viz]) ? dataBuilder(surf[viz]) : ary;
-  
   mainAnimationLoop.setAnimationTimeout(function(){
       //create bodies will reset if already called
-      createBodies(ary);
+      console.log(sim[0].regionAlias, sim[0])
+      createBodies(sim);
       engine.world.gravity.y = -0.1;
       World.add(engine.world, physicsBodies.concat(vertSprings.concat(horzSprings)));
       // // run the engine

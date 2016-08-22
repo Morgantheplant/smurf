@@ -17,7 +17,9 @@ module.exports = function(raw){
         var date = confidence["dateStamp"][i];
         day.date = date;
         day.dayOfWeek = daysOfWeek[new Date(date).getDay()];
-        multiDay.push(day)
+        day.regionName = raw["Location"].regionname;
+        day.regionAlias = raw["Location"].subregionalias;
+        multiDay.push(day);
     }
     return multiDay
 }

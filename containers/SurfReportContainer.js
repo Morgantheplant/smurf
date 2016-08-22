@@ -3,19 +3,19 @@ import classNames from 'classnames'
 import SurfReport from '../components/SurfReport'
 import SurfReportDashboard from '../components/SurfReportDashboard'
 import { connect } from 'react-redux';
-//todo: clean this up. single source of truth
-var surf = require('../data/surfData.json');
-var dataBuilder = require('../dataBuilder.js');
 
-var ary = dataBuilder(surf)
+var surf = require('../data/surfData.json');
 
 class SurfReportContainer extends React.Component {
    constructor (props) {
     super(props)
   }
   render () {
+    let ary = this.props.surfData.data;
+    console.log(ary)
     return (
        <SurfReportDashboard
+          regionName = {ary[this.props.indexHovered].regionAlias}
           location={ary[this.props.indexHovered].dayofWeek}
           datePretty={ary[this.props.indexHovered].date}
           surfHeightRange={ary[this.props.indexHovered].surfMax+"-"+ ary[this.props.indexHovered].surfMin}

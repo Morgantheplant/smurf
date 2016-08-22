@@ -15,14 +15,22 @@ class Root extends React.Component {
     super(props)
   }
   render () {
+    
+    let loc = this.props.surfspot ? this.props.surfspot.spot : null;
+    if(loc){
+      let map = initMap.mapInstance;
+      map.addSingleBoundsListener(startSim, loc);
+      map.changeLoc(loc)
+    }
+
     return (
       <div>
         {
-          (this.props.params.surfspot ?
+          (this.props.surfspot ?
             (<div>
-            <TidesContainer /> 
-            <ClockContainer />
-            <SurfReportContainer />
+            <TidesContainer surfData={this.props.surfspot}/> 
+            <ClockContainer surfData={this.props.surfspot}/>
+            <SurfReportContainer surfData={this.props.surfspot}/>
           </div>) :null) 
         } 
       </div>
@@ -34,18 +42,13 @@ class Root extends React.Component {
        store.dispatch(clockTick())
     }, 1000)    
   }
-   componentWillReceiveProps(){
-    let loc = this.props.params.surfspot;
-    if(loc){
-      let map = initMap.mapInstance;
-      map.getMap().addListener('bounds_changed',function(){
-        startSim(loc);
-      })
-      map.changeLoc(loc)
-    }
+  
+  componentWillUpdate(){
+    //debugger
+    
   }
- 
 }
+
 
 export default Root;
 

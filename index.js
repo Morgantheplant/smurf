@@ -2,7 +2,7 @@ var React = require('react');
 var Router = require('react-router').Router;
 var Provider = require('react-redux').Provider;
 var Route = require('react-router').Route;
-var Root = require('./components/Root').default;
+var RootContainer = require('./containers/RootContainer').default;
 import { browserHistory } from 'react-router'
 var history = require('react-router').history;
 var render = require('react-dom').render;
@@ -16,9 +16,9 @@ window.initMap = map.initMap.bind(map);
 render((
   <Provider store={store}>
     <Router history={ browserHistory }>
-      <Route path="/" component={ Root }>
+      <Route path="/" component={ RootContainer }>
       </Route>  
-      <Route path="/:surfspot" component={ Root }>
+      <Route path="/:surfspot" component={ RootContainer }>
       </Route>
     </Router>
   </Provider>  

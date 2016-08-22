@@ -4,7 +4,6 @@ var styles = require('./styles/mapstyles.js');
 var startSim = require('./mainAnimation.js')
 // todo load this from separate data source
 let surfSpots = require('./data/surfSpots');
-//let surfSpots = [{spot: "ob",lat: 37.809, lng: -122.500}, {spot: "sc",lat: 36.950127, lng: -122.026017}, {spot: "bigsur",lat: 36.29649, lng: -121.889544}, {spot: "morro",lat: 35.371313, lng: -120.869593}, {spot: "rincon",lat: 34.372669, lng: -119.447469}, {spot: "la",lat: 34.000145, lng: -118.804716}]
 
 function Map() {
   this.locations = [];
@@ -19,6 +18,7 @@ Map.prototype.initMap = function initMap(){
   });
   this.map.setOptions({styles: styles});
   this.map.addListener('bounds_changed', function(){
+    let hasPath = window._INITIAL_SETTINGS_.spot !== "root";
     if(!this.loaded){
       this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
@@ -27,9 +27,9 @@ Map.prototype.initMap = function initMap(){
           this.addSpotMarker(spot)
         }.bind(this),i * 100);
       }
-    }
-    if(window._INITIAL_SETTINGS_.spot !== "root"){
-      startSim(window._INITIAL_SETTINGS_.spot)
+      if(hasPath){
+        startSim(window._INITIAL_SETTINGS_.spot);
+      }
     }
   }.bind(this));
   //assign instance to global 
@@ -62,6 +62,7 @@ Map.prototype.addSpotMarker = function addSpotMarker(loc){
 }
 
 Map.prototype.changeLoc = function changeLoc(loc){
+  //todo: clean this up
   let spot = this.locations.filter(function(item){
     return item.details && item.details.spot === loc;
   })
@@ -69,5 +70,18 @@ Map.prototype.changeLoc = function changeLoc(loc){
     this.map.panTo(spot[0].getPosition());
   }
 }
+
+Map.prototype.addSingleBoundsListener = function addSingleListener(cb, param){
+  let called = false;
+  this.map.addListener('bounds_changed', function(){
+    if(!called){
+      called = true;
+      cb(param)
+    } else {
+      google.maps.event.clearListeners(map, 'bounds_changed');
+    }
+  });
+}
+
 
 module.exports = Map;

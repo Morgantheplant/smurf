@@ -20,7 +20,8 @@ class SurfReportDashboard extends React.Component {
         </ul>
       </div>
       <div className="clear"></div>
-      <p className="hoverHide">{this.props.forecaseSummaryText}</p>
+      <p className="hoverHide">{this.props.regionName +": "+ this.props.forecaseSummaryText  }</p>
+
     </div>
       )
   }

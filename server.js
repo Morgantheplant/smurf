@@ -10,6 +10,7 @@ app.set('view engine', '.hbs');
 
 var center = {"lat": 37.309, "lng": -122.400};
 
+
 app.get('/', function(req, res) {
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), spot:"root"});
 });
@@ -22,8 +23,22 @@ app.get('/styles.min.css', function(req, res){
 })
 app.use(express.static(__dirname + '/public/images'));
 
+app.get('/data/:spot', function(req, res){
+  var spot;
+  for (var i = 0; i < surfSpots.length; i++) {
+    var location = surfSpots[i];
+    if(location.spot === req.params.spot){
+      spot = location.data;
+      break;
+    }
+  }
+  if(spot){
+    res.sendFile(__dirname + '/data/' + spot + '.json');
+  }
+
+})
+
 app.get('/:spot', function(req, res) {
-  //todo: add support for routes, right now /:spot gets static bundle and css assets
   var spot;
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
