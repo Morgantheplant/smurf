@@ -50,7 +50,7 @@ function reset(){
 }
 
 function createBodies(days){
-  
+
   if(engine){
     Engine.clear(engine);
     reset();
@@ -110,11 +110,11 @@ function createBodies(days){
     function mouseOverEvent(){
         this.setAttributeNS(null, 'fill','#0c9fd5');
         var day = days[this.index]
-        svgBars[this.index].setAttributeNS(null, 'fill', '#24c1f8');
+        svgBars[this.index].setAttributeNS(null, 'fill', '#0c9fd5');
         store.dispatch(hoverDay(this.index))
       }
 
-    rect.addEventListener('mouseover', mouseOverEvent.bind(rect));
+    //rect.addEventListener('mouseover', mouseOverEvent.bind(rect));
 
     baseSVG.addEventListener('mouseover', mouseOverEvent.bind(rect));
     
@@ -122,7 +122,7 @@ function createBodies(days){
         var fColor = (this.index === highlighted)? initHighlight : initColor;
         this.setAttributeNS(null, 'fill',fColor);
          svgBars[this.index].setAttributeNS(null, 'fill', fColor);
-
+         svgBods[this.index].setAttributeNS(null, 'fill', fColor);
         Body.setVelocity(physicsBodies[this.index], {x:0,y:-5}, {x:0.000,y:0.001});
         this.setAttributeNS(null, 'height', height);
         this.setAttributeNS(null, 'width', width);
@@ -136,7 +136,7 @@ function createBodies(days){
     }.bind(rect))
       
       
-      rect.addEventListener('mouseout', mouseOutEvent.bind(rect));
+      //rect.addEventListener('mouseout', mouseOutEvent.bind(rect));
       baseSVG.addEventListener('mouseout', mouseOutEvent.bind(rect));
 
       physicsBodies.push(physicsBody);

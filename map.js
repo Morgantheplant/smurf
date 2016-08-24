@@ -3,7 +3,10 @@ var API_KEY = require('./config.js');
 var styles = require('./styles/mapstyles.js');
 var startSim = require('./mainAnimation.js')
 // todo load this from separate data source
-let surfSpots = require('./data/surfSpots');
+
+let surfData = require('./data');
+let surfDataBuilder = require('./data/surfDataBuilder');
+let surfSpots = surfDataBuilder(surfData);
 
 function Map() {
   this.locations = [];
@@ -23,6 +26,7 @@ Map.prototype.initMap = function initMap(){
       this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
         let spot = surfSpots[i];
+        //todo: use rAF wrapper;
         setTimeout(function(){
           this.addSpotMarker(spot)
         }.bind(this),i * 100);
@@ -42,7 +46,7 @@ Map.prototype.getMap = function getMap(){
 
 Map.prototype.addSpotMarker = function addSpotMarker(loc){
   let spot = new google.maps.Marker({ 
-    position: { lat:loc.lat, lng:loc.lng},
+    position: { lat:+loc.lat, lng:+loc.lon},
     icon: {
       path: google.maps.SymbolPath.CIRCLE,
       scale: 5,
