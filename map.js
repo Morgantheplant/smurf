@@ -26,6 +26,7 @@ Map.prototype.initMap = function initMap(){
       this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
         let spot = surfSpots[i];
+        console.log(spot.name)
         //todo: use rAF wrapper;
         setTimeout(function(){
           this.addSpotMarker(spot)
