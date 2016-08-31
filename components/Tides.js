@@ -1,6 +1,6 @@
-import React from '../node_modules/react'
-import classNames from 'classnames'
-import TideLabel from './TideLabel'
+import React from 'react';
+import classNames from 'classnames';
+import TideLabel from './TideLabel';
 
 //import {Tide} from '../public/data.json'
 //todo: see how es2015 imports handles json 

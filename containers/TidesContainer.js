@@ -1,5 +1,5 @@
-import React from 'react'
-import Tides from '../components/Tides'
+import React from 'react';
+import Tides from '../components/Tides';
 import { connect } from 'react-redux';
 
 class TidesContainer extends React.Component {

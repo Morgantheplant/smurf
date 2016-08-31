@@ -1,10 +1,10 @@
-import React from 'react'
-import classNames from 'classnames'
-import SurfReport from '../components/SurfReport'
-import SurfReportDashboard from '../components/SurfReportDashboard'
+import React from 'react';
+import classNames from 'classnames';
+import SurfReport from '../components/SurfReport';
+import SurfReportDashboard from '../components/SurfReportDashboard';
 import { connect } from 'react-redux';
 
-var surf = require('../data/surfData.json');
+import surf from '../data/surfData.json';
 
 class SurfReportContainer extends React.Component {
    constructor (props) {

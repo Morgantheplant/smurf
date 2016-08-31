@@ -1,11 +1,11 @@
-import React from 'react'
-import Root from '../components/Root'
+import React from 'react';
+import Root from '../components/Root';
 import startSim from '../mainAnimation';
-// import { clockTick } from '../actions/clockActions'
-// import mainAnimationLoop from '../mainAnimationLoop';
-var store = require('../reducers/rootStore').default;
-var dataBuilder = require('../dataBuilder.js');
 
+import store from '../reducers/rootStore';
+import dataBuilder from '../dataBuilder.js';
+
+//todo: change to class extends
 let RootContainer = React.createClass({
 
   getInitialState () {

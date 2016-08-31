@@ -1,5 +1,5 @@
-import React from '../node_modules/react'
-import classNames from 'classnames'
+import React from 'react';
+import classNames from 'classnames';
 
 class Digit extends React.Component {
    constructor (props) {

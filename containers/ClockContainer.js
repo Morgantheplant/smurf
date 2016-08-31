@@ -1,6 +1,6 @@
-import React from 'react'
-import classNames from 'classnames'
-import Clock from '../components/Clock'
+import React from 'react';
+import classNames from 'classnames';
+import Clock from '../components/Clock';
 import { connect } from 'react-redux';
 
 //todo: make sure container is properly set up

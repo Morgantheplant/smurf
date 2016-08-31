@@ -5,6 +5,7 @@ var port = process.env.PORT || 8000;
 var config = require('./config.js')
 var exphbs = require('express-handlebars');
 var surfSpots = require('./data/surfSpots');
+
 app.engine('.hbs', exphbs({ extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
