@@ -33,16 +33,29 @@ AnimationLoop.prototype.stop = function stop(){
 };
 
 AnimationLoop.prototype.addAnimation = function addAnimation(animation){
+
   if (typeof animation === "function" && this.animations.indexOf(animation) === -1) {
     this.animations.push(animation);
   }
 };
 
+AnimationLoop.prototype.contains = function(animation){
+  let contains = false;
+  for (var i = this.animations.length - 1; i >= 0; i--) {
+    if(this.animations[i].name === animation.name){
+       contains = true;
+       break;
+    }
+  }
+  return contains;
+}
+
 AnimationLoop.prototype.removeAnimation = function removeAnimation(animation) {
   //var index = this.animations.indexOf(animation);
   var index = -1;
   for (var i = this.animations.length - 1; i >= 0; i--) {
-    if(this.animations[i] === animation){
+    if(this.animations[i].name === animation.name){
+      console.log('removing')
       index = i
       break;
     }
