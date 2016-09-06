@@ -9,15 +9,13 @@ import dataBuilder from '../dataBuilder.js';
 let RootContainer = React.createClass({
 
   getInitialState () {
-    console.log(1)
     return {
       surfspot: window._INITIAL_SETTINGS_.spot || null, 
-      data: {}
+      data: null
     }
   },
 
   componentDidMount () {
-    console.log(2)
     // fetch data initially in scenario 2 from above
     this.updateSpot()
   },
@@ -28,10 +26,6 @@ let RootContainer = React.createClass({
     let newSpot = this.props.params.surfspot
     if (newSpot !== oldSpot){
       this.updateSpot()
-      console.log("old spot: ", oldSpot,"new spot:", newSpot)
-    }
-    if(!newSpot){
-    console.log(newSpot, "why is this undefined?")
     }
   },
 
@@ -41,25 +35,25 @@ let RootContainer = React.createClass({
   },
 
   updateSpot () {
-    console.log(3)
     let loc = this.props.params.surfspot;
-    console.log(loc, "this is the spot")
-    if(!this.ignoreUpdate){
+    if(!this.ignoreUpdate && loc){
       $.get( "/data/" + loc, function( data ) {
         this.setState({
-          surfspot: { 
-            spot:loc, 
-            data: dataBuilder(data)
-          } 
+          surfspot:loc, 
+          data: dataBuilder(data)
         });
-        
       }.bind(this), "json" );
+    } else if (!loc){
+      this.setState({
+        surfspot:null,
+        data: null
+      })
     }
   },
 
   render () {
-    console.log(this.state.surfspot, "rendering root");
-    return <Root surfspot={this.state.surfspot}/>
+    console.log(this.state.surfspot, this.state.data,"rendering root");
+    return <Root surfspot={this.state.surfspot} surfData={this.state.data} />
   }
 })
 

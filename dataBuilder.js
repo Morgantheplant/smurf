@@ -21,5 +21,6 @@ module.exports = function(raw){
         day.regionAlias = raw["Location"].subregionalias;
         multiDay.push(day);
     }
+    multiDay.Tide = raw.Tide;
     return multiDay
 }

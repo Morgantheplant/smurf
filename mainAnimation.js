@@ -26,12 +26,10 @@ function SurfReportAnimation(options){
   this.mainBackground = options.$el;
   this.$el = {
     $el: options.$el
-  }
+  };
   this.svgBoxDims = options.$el.getBoundingClientRect(); 
   this.mainAnimationLoop = options.mainAnimationLoop;
-  this.name = options.name
-  this.mainBackground.style.opacity = 1;
-  this.mainBackground.style.visibility = "visible";
+  this.name = options.name;
 }
 
 SurfReportAnimation.prototype.reset = function reset(){
@@ -61,14 +59,22 @@ SurfReportAnimation.prototype.createBodies = function createBodies(days){
     topRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
     bottomRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
   }
+  this.mainBackground.style.opacity = 1;
+  this.mainBackground.style.visibility = "visible";
 }
 
 SurfReportAnimation.prototype.destroyElements = function(){
   if(this.engine){
     Engine.clear(this.engine);
     this.reset();
-    this.$el
-    debugger;
+    this.svgBods = [];
+    this.svgBars = [];
+    let { $el } = this.$el;
+    while ($el.lastChild) {
+      $el.removeChild($el.lastChild);
+    }
+    this.mainBackground.style.opacity = 0;
+    this.mainBackground.style.visibility = "hidden";
   }
 }
 
@@ -185,19 +191,37 @@ function mouseOutEvent(){
   this.setAttributeNS(null, 'width', width);
 }
 
-let animationInitialized;
+
 let el = document.getElementById('world');
+let animationInitialized;
+let currentViz;
 
 module.exports = function startSim(viz){ 
+  //hide svg elements if called with no arguments and it has already been initialized
+  if(!surf[viz] && animationInitialized){
+     animationInitialized.destroyElements();
+  } 
+  // if animation hasnt been initialized
   if(!animationInitialized){
     animationInitialized = new SurfReportAnimation({
       $el: el,
       mainAnimationLoop: mainAnimationLoop
     });
   }
-  let sim = (viz && surf[viz]) ? dataBuilder(surf[viz]) : ary;
-  mainAnimationLoop.setAnimationTimeout(animationInitialized.init.bind(animationInitialized, sim),1000);
+  // make sure viz exists and start animation 
+  console.log( "current viz", currentViz, "viz",viz)
+  if(viz != currentViz && surf[viz]){
+    currentViz = viz;
+    let sim = dataBuilder(surf[viz]);
+    mainAnimationLoop.setAnimationTimeout(animationInitialized.init.bind(animationInitialized, sim),250);
+  }
+  //handle unknown routes and home routes
+  if(viz != currentViz){
+    currentViz = viz;
+  }
 }
+
+
 
 
 

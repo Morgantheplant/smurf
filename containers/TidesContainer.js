@@ -8,7 +8,7 @@ class TidesContainer extends React.Component {
   }
   render() {
     return (
-       <Tides targetIndex={this.props.indexHovered} />)
+       <Tides surfData={this.props.surfData} targetIndex={this.props.indexHovered} />)
   }      
 }
 

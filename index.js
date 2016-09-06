@@ -8,14 +8,16 @@ import startSim from "./mainAnimation"
 import store from "./reducers/rootStore";
 
 const map = new Map()
-window.initMap = map.initMap.bind(map);
+window.initMap = map.initMap.bind(map, initReact);
 
-render((
-  <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={RootContainer} />
-      <Route path="/:surfspot" component={RootContainer} />
-    </Router>
-  </Provider>
-), document.querySelector("#react-container"));
+function initReact(){
+  render((
+    <Provider store={store}>
+      <Router history={browserHistory}>
+        <Route path="/" component={RootContainer} />
+        <Route path="/:surfspot" component={RootContainer} />
+      </Router>
+    </Provider>
+  ), document.querySelector("#react-container"));
+}
 

@@ -6,7 +6,7 @@ import { clockTick } from '../actions/clockActions';
 import { browserHistory } from "react-router";
 import TidesContainer from '../containers/TidesContainer';
 import SurfReportContainer from '../containers/SurfReportContainer';
-import CloseButton from '../containers/CloseButton';
+import CloseButton from '../components/CloseButton';
 import mainAnimationLoop from '../mainAnimationLoop';
 import startSim from '../mainAnimation';
 
@@ -23,23 +23,22 @@ class Root extends React.Component {
     browserHistory.push("/");
   }
   render() {
-    let loc = this.props.surfspot ? this.props.surfspot.spot : null;
+    let loc = this.props.surfspot;
     if(loc){
       let map = initMap.mapInstance;
       map.addSingleBoundsListener(startSim, loc);
       map.changeLoc(loc)
-    } else {
-      console.log('got here', loc, this.props.surfspot)
     }
-
+    startSim(this.props.surfspot)
+  
     return (
       <div>
         {
-          (this.props.surfspot ?
+          (this.props.surfData ?
             (<div>
-            <TidesContainer surfData={this.props.surfspot}/> 
-            <ClockContainer surfData={this.props.surfspot}/>
-            <SurfReportContainer surfData={this.props.surfspot}/>
+            <TidesContainer surfData={this.props.surfData}/> 
+            <ClockContainer surfData={this.props.surfData}/>
+            <SurfReportContainer surfData={this.props.surfData}/>
             <CloseButton onClose={this.close.bind(this)}/>
           </div>) :null) 
         } 

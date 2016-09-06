@@ -32,11 +32,12 @@ app.get('/data/:spot', function(req, res){
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
     if(location.spot === req.params.spot){
-      spot = location.data;
+      spot = location.spot;
       break;
     }
   }
   if(spot){
+    
     res.sendFile(__dirname + '/data/' + spot + '.json');
   }
 
@@ -50,7 +51,6 @@ app.get('/:spot', function(req, res) {
   var spot;
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
-    console.log(location.spot, req.params)
     if(location.spot === req.params.spot){
       spot = location.spot
       center = { 
@@ -60,7 +60,6 @@ app.get('/:spot', function(req, res) {
       break;
     }
   }
-  console.log(spot, center, "this is the spot")
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), spot: spot });
 });
 

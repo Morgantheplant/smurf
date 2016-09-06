@@ -11,8 +11,8 @@ class SurfReportContainer extends React.Component {
     super(props)
   }
   render () {
-    let ary = this.props.surfData.data;
-    console.log(ary)
+    let ary = this.props.surfData;
+    
     return (
        <SurfReportDashboard
           regionName = {ary[this.props.indexHovered].regionAlias}
@@ -28,16 +28,6 @@ class SurfReportContainer extends React.Component {
        )
   }      
 }
-
- // <SurfReport
- //          location={ary[this.props.indexHovered].dayofWeek}
- //          datePretty={ary[this.props.indexHovered].date}
- //          surfHeightRange={ary[this.props.indexHovered].surfMax+"-"+ ary[this.props.indexHovered].surfMin}
- //          surfHeightRangeText={ary[this.props.indexHovered].surfText}
- //          conditionIcon={""}
- //          conditionsText={ary[this.props.indexHovered].generalCondition || "-"}
- //          forecaseSummaryText={ary[this.props.indexHovered].generalText}
- //        />
 
 function mapStateToProps(state) {
   return {

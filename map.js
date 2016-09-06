@@ -1,7 +1,6 @@
 import { browserHistory } from "react-router";
 import API_KEY from"./config.js";
 import styles from"./styles/mapstyles.js";
-import startSim from"./mainAnimation.js";
 // todo load this from separate data source
 import surfData from "./data";
 import surfDataBuilder from "./data/surfDataBuilder";
@@ -12,7 +11,7 @@ function Map() {
   this.loaded = false;
 }
 
-Map.prototype.initMap = function initMap(){
+Map.prototype.initMap = function initMap(render){
   this.map = new google.maps.Map(document.getElementById("map"), {
     center: window._INITIAL_SETTINGS_.center,
     disableDefaultUI: true,
@@ -24,6 +23,7 @@ Map.prototype.initMap = function initMap(){
     let hasPath = window._INITIAL_SETTINGS_.spot !== "root";
     // into marker animaiton to run only once
     if(!this.loaded){
+
       this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
         let spot = surfSpots[i];
@@ -33,9 +33,9 @@ Map.prototype.initMap = function initMap(){
         }.bind(this),i * 100);
       }
       // call simulation when bounds change
-      if(hasPath){
-        startSim(window._INITIAL_SETTINGS_.spot);
-      }
+      // if(hasPath){
+        render();
+      // }
     }
   }.bind(this));
   //assign instance to global 
@@ -68,6 +68,7 @@ Map.prototype.addSpotMarker = function addSpotMarker(loc){
 }
 
 Map.prototype.changeLoc = function changeLoc(loc){
+  console.log("changing loc")
   //todo: clean this up
   let spot = this.locations.filter(function(item){
     return item.details && item.details.spot === loc;
