@@ -3,8 +3,7 @@ import dataBuilder from './dataBuilder.js';
 import mainAnimationLoop from './mainAnimationLoop';
 import store from './reducers/rootStore';
 import { hoverDay } from './actions/clockActions';
-
-// json 
+ 
 let surf = require('./data'); 
 
 let svgns = "http://www.w3.org/2000/svg",
@@ -36,7 +35,6 @@ function SurfReportAnimation(options){
 }
 
 SurfReportAnimation.prototype.reset = function reset(){
-  console.log('reset')
   this.mainAnimationLoop.removeAnimation(this.matterEngine.bind(this));
   this.mainAnimationLoop.removeAnimation(this.render.bind(this));
   this.physicsBodies = [];
@@ -62,6 +60,15 @@ SurfReportAnimation.prototype.createBodies = function createBodies(days){
     bottomRect.addEventListener('click', clickEvent.bind(topRect))
     topRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
     bottomRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
+  }
+}
+
+SurfReportAnimation.prototype.destroyElements = function(){
+  if(this.engine){
+    Engine.clear(this.engine);
+    this.reset();
+    this.$el
+    debugger;
   }
 }
 

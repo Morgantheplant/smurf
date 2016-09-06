@@ -4,7 +4,10 @@ var http = require('http').Server(app);
 var port = process.env.PORT || 8000;
 var config = require('./config.js')
 var exphbs = require('express-handlebars');
-var surfSpots = require('./data/surfSpots');
+//var surfSpots = require('./data/surfSpots');
+var surfData = require("./data");
+var surfDataBuilder = require("./data/surfDataBuilder");
+var surfSpots = surfDataBuilder(surfData);
 
 app.engine('.hbs', exphbs({ extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -39,19 +42,25 @@ app.get('/data/:spot', function(req, res){
 
 })
 
+app.get('*/favicon.ico', function(req, res) {
+  res.sendFile(__dirname + '/favicon.ico');
+})
+
 app.get('/:spot', function(req, res) {
   var spot;
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
-    if(location.spot === req.params){
+    console.log(location.spot, req.params)
+    if(location.spot === req.params.spot){
       spot = location.spot
       center = { 
-        lat: location.lat, 
-        lng: location.lng 
+        lat: +location.lat, 
+        lng: +location.lon 
       };
       break;
     }
   }
+  console.log(spot, center, "this is the spot")
   res.render(__dirname +'/public/index', { "API_KEY": config.API_KEY, center: JSON.stringify(center), spot: spot });
 });
 

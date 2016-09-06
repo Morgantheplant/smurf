@@ -1,11 +1,10 @@
-import { browserHistory } from 'react-router'
-var API_KEY = require('./config.js');
-var styles = require('./styles/mapstyles.js');
-var startSim = require('./mainAnimation.js')
+import { browserHistory } from "react-router";
+import API_KEY from"./config.js";
+import styles from"./styles/mapstyles.js";
+import startSim from"./mainAnimation.js";
 // todo load this from separate data source
-
-let surfData = require('./data');
-let surfDataBuilder = require('./data/surfDataBuilder');
+import surfData from "./data";
+import surfDataBuilder from "./data/surfDataBuilder";
 let surfSpots = surfDataBuilder(surfData);
 
 function Map() {
@@ -14,24 +13,26 @@ function Map() {
 }
 
 Map.prototype.initMap = function initMap(){
-  this.map = new google.maps.Map(document.getElementById('map'), {
+  this.map = new google.maps.Map(document.getElementById("map"), {
     center: window._INITIAL_SETTINGS_.center,
     disableDefaultUI: true,
     zoom: 6
   });
   this.map.setOptions({styles: styles});
-  this.map.addListener('bounds_changed', function(){
+
+  this.map.addListener("bounds_changed", function(){
     let hasPath = window._INITIAL_SETTINGS_.spot !== "root";
+    // into marker animaiton to run only once
     if(!this.loaded){
       this.loaded = true;
       for (let i = 0; i < surfSpots.length; i++) {
         let spot = surfSpots[i];
-        console.log(spot.name)
         //todo: use rAF wrapper;
         setTimeout(function(){
           this.addSpotMarker(spot)
         }.bind(this),i * 100);
       }
+      // call simulation when bounds change
       if(hasPath){
         startSim(window._INITIAL_SETTINGS_.spot);
       }
@@ -59,7 +60,7 @@ Map.prototype.addSpotMarker = function addSpotMarker(loc){
     map: this.map
   });
   spot.details = loc;
-  spot.addListener('click', function() {
+  spot.addListener("click", function() {
     this.map.setZoom(6);
     browserHistory.push(loc.spot)
   }.bind(this));
@@ -73,17 +74,22 @@ Map.prototype.changeLoc = function changeLoc(loc){
   })
   if(spot.length){
     this.map.panTo(spot[0].getPosition());
+  } else {
+    // go to home root
+    this.map.panTo(window._INITIAL_SETTINGS_.center)
+    //todo: dispatch close event
   }
 }
 
+
 Map.prototype.addSingleBoundsListener = function addSingleListener(cb, param){
   let called = false;
-  this.map.addListener('bounds_changed', function(){
+  this.map.addListener("bounds_changed", function(){
     if(!called){
       called = true;
       cb(param)
     } else {
-      google.maps.event.clearListeners(map, 'bounds_changed');
+      google.maps.event.clearListeners(map, "bounds_changed");
     }
   });
 }
