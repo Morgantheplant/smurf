@@ -17,20 +17,25 @@ class Root extends React.Component {
     mainAnimationLoop.start();
     mainAnimationLoop.setAnimationInterval(function(){
        store.dispatch(clockTick())
-    }, 1000)    
+    }, 1000)
+    //this.updateSim()
   }
   close() {
     browserHistory.push("/");
   }
-  render() {
+  updateSim() {
     let loc = this.props.surfspot;
-    if(loc){
-      let map = initMap.mapInstance;
+    if(loc && loc !== "root"){
+      let map = window._googMap;
       map.addSingleBoundsListener(startSim, loc);
       map.changeLoc(loc)
+    } else {
+       startSim(null)
     }
-    startSim(this.props.surfspot)
-  
+  }
+  render() {
+    this.updateSim()
+
     return (
       <div>
         {

@@ -10,6 +10,7 @@ module.exports = function(raw){
         var day = {}
         day.surfMax = breakDown["surfMax"][i];
         day.surfMin = breakDown["surfMin"][i];
+        console.log("breakDown: ", breakDown["surfText"][i], "breakdown:", breakDown)
         day.surfText = breakDown["surfText"][i];
         day.generalCondition = breakDown["generalCondition"][i];
         day.surfRange = breakDown["surfRange"][i];

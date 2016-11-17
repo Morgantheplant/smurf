@@ -14,8 +14,7 @@ let width = 200;
 let height = 100;
 let lineColors = "gray";
 let labelColors = "white";
-// todo: possibly remove this
-let nightShade = "rgb(0,0,0)";
+let nightShade = "rgba(0,0,0)";
 let days = 1;
 let dayRange = (days * 23);
 let highest = 0;

@@ -1,6 +1,5 @@
 import React from 'react';
 import Root from '../components/Root';
-import startSim from '../mainAnimation';
 
 import store from '../reducers/rootStore';
 import dataBuilder from '../dataBuilder.js';
@@ -15,9 +14,10 @@ let RootContainer = React.createClass({
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     // fetch data initially in scenario 2 from above
     this.updateSpot()
+    
   },
 
   componentDidUpdate (prevProps) {
@@ -38,9 +38,10 @@ let RootContainer = React.createClass({
     let loc = this.props.params.surfspot;
     if(!this.ignoreUpdate && loc){
       $.get( "/data/" + loc, function( data ) {
+        var item = dataBuilder(data);
         this.setState({
           surfspot:loc, 
-          data: dataBuilder(data)
+          data: item
         });
       }.bind(this), "json" );
     } else if (!loc){
@@ -52,7 +53,6 @@ let RootContainer = React.createClass({
   },
 
   render () {
-    console.log(this.state.surfspot, this.state.data,"rendering root");
     return <Root surfspot={this.state.surfspot} surfData={this.state.data} />
   }
 })

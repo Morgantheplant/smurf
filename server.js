@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var port = process.env.PORT || 8000;
 var config = require('./config.js')
 var exphbs = require('express-handlebars');
+var request = require('request');
 //var surfSpots = require('./data/surfSpots');
 var surfData = require("./data");
 var surfDataBuilder = require("./data/surfDataBuilder");
@@ -31,17 +32,24 @@ app.get('/data/:spot', function(req, res){
   var spot;
   for (var i = 0; i < surfSpots.length; i++) {
     var location = surfSpots[i];
-    if(location.spot === req.params.spot){
+     if(location.spot === req.params.spot){
       spot = location.spot;
       break;
     }
   }
-  if(spot){
-    
+  if(spot === "ob"){
+    app.getOceanBEachReport(res); 
+  } else if(spot){
     res.sendFile(__dirname + '/data/' + spot + '.json');
   }
 
 })
+
+app.getOceanBEachReport = function(res){
+  request("http://api.surfline.com/v1/forecasts/4233", function(error, response, body){
+    res.send(body);
+  });
+}
 
 app.get('*/favicon.ico', function(req, res) {
   res.sendFile(__dirname + '/favicon.ico');

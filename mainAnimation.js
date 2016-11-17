@@ -33,8 +33,9 @@ function SurfReportAnimation(options){
 }
 
 SurfReportAnimation.prototype.reset = function reset(){
-  this.mainAnimationLoop.removeAnimation(this.matterEngine.bind(this));
-  this.mainAnimationLoop.removeAnimation(this.render.bind(this));
+  debugger
+  this.mainAnimationLoop.removeAnimation(this._matterEngine);
+  this.mainAnimationLoop.removeAnimation(this._render);
   this.physicsBodies = [];
   this.vertSprings = [];
   this.horzSprings = [];
@@ -46,6 +47,7 @@ SurfReportAnimation.prototype.createBodies = function createBodies(days){
     this.reset();
   }
   this.engine = Engine.create();
+  this.mainBackground.style.display = "block";
   for (var i = 0; i < days.length; i++) {
     let topRect = this.createTopBar(i);
     let bottomRect = this.createBottomBar(i);
@@ -59,8 +61,6 @@ SurfReportAnimation.prototype.createBodies = function createBodies(days){
     topRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
     bottomRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
   }
-  this.mainBackground.style.opacity = 1;
-  this.mainBackground.style.visibility = "visible";
 }
 
 SurfReportAnimation.prototype.destroyElements = function(){
@@ -73,8 +73,7 @@ SurfReportAnimation.prototype.destroyElements = function(){
     while ($el.lastChild) {
       $el.removeChild($el.lastChild);
     }
-    this.mainBackground.style.opacity = 0;
-    this.mainBackground.style.visibility = "hidden";
+    this.mainBackground.style.display = "none"
   }
 }
 
@@ -152,11 +151,13 @@ SurfReportAnimation.prototype.render = function render() {
 };
 
 SurfReportAnimation.prototype.init = function init(data){
+  debugger
   //create bodies will reset if already called
   this.createBodies(data);
   this.engine.world.gravity.y = -0.1;
   World.add(this.engine.world, this.physicsBodies.concat(this.vertSprings.concat(this.horzSprings)));
   // run the engines
+  // store reference to engine and render calls
   this.mainAnimationLoop.addAnimation(this.matterEngine.bind(this));
   this.mainAnimationLoop.addAnimation(this.render.bind(this));
 }
@@ -195,12 +196,18 @@ function mouseOutEvent(){
 let el = document.getElementById('world');
 let animationInitialized;
 let currentViz;
+let boundAnimation;
 
-module.exports = function startSim(viz){ 
+module.exports = function startSim(viz){
+  debugger
   //hide svg elements if called with no arguments and it has already been initialized
-  if(!surf[viz] && animationInitialized){
-     animationInitialized.destroyElements();
-  } 
+  if(!surf[viz] || viz === "root"){
+    if(animationInitialized){
+      mainAnimationLoop.removeAnimation(boundAnimation);
+      animationInitialized.destroyElements();
+      return 
+    }
+  }
   // if animation hasnt been initialized
   if(!animationInitialized){
     animationInitialized = new SurfReportAnimation({
@@ -209,11 +216,11 @@ module.exports = function startSim(viz){
     });
   }
   // make sure viz exists and start animation 
-  console.log( "current viz", currentViz, "viz",viz)
   if(viz != currentViz && surf[viz]){
     currentViz = viz;
     let sim = dataBuilder(surf[viz]);
-    mainAnimationLoop.setAnimationTimeout(animationInitialized.init.bind(animationInitialized, sim),250);
+    boundAnimation = animationInitialized.init(sim);
+    
   }
   //handle unknown routes and home routes
   if(viz != currentViz){

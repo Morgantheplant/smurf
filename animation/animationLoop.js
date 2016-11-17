@@ -7,11 +7,11 @@ function AnimationLoop(){
   this.isRunning = false;
   this.startTime = 0;
   this._time = 0;
-  
+  window.animation = this.animations
   this.updateLoop = function updateLoop(time){ 
     this._time = time;
     //loop through all animations call them and pass in time
-    for(var i = 0; i < this.animations.length; i++){
+    for(var i = 0, len = this.animations.length; i < len; i++){
         this.animations[i](time);
     }
     //store reference so we can cancel it later
@@ -33,45 +33,34 @@ AnimationLoop.prototype.stop = function stop(){
 };
 
 AnimationLoop.prototype.addAnimation = function addAnimation(animation){
-
   if (typeof animation === "function" && this.animations.indexOf(animation) === -1) {
     this.animations.push(animation);
   }
 };
 
-AnimationLoop.prototype.contains = function(animation){
-  let contains = false;
-  for (var i = this.animations.length - 1; i >= 0; i--) {
-    if(this.animations[i].name === animation.name){
-       contains = true;
-       break;
-    }
-  }
-  return contains;
-}
 
 AnimationLoop.prototype.removeAnimation = function removeAnimation(animation) {
-  //var index = this.animations.indexOf(animation);
   var index = -1;
-  for (var i = this.animations.length - 1; i >= 0; i--) {
-    if(this.animations[i].name === animation.name){
-      console.log('removing')
-      index = i
-      break;
+  if(animation){
+    for (var i = 0, len = this.animations.length; i < len; i++) {
+      if(this.animations[i] === animation){
+        index = i
+        break;
+      }
     }
-  }
-  if (index > -1) {
-    this.animations.splice(index, 1);
+    if (index > -1) {
+      this.animations.splice(index, 1);
+    }
   }
 };
 
 AnimationLoop.prototype.setAnimationTimeout = function setAnimationTimeout(animation, delay){
   var startTime = this._time;
   var animLoop = this;
-  this.addAnimation(function delayedAnimation(time){
+  this.addAnimation(function timeoutAnimation(time){
     if(time - startTime >= delay){
       animation();
-      animLoop.removeAnimation(delayedAnimation);
+      animLoop.removeAnimation(timeoutAnimation);
     }
   });
 }
@@ -79,12 +68,16 @@ AnimationLoop.prototype.setAnimationTimeout = function setAnimationTimeout(anima
 AnimationLoop.prototype.setAnimationInterval = function setAnimationInterval(animation, interval){
   var startTime = this._time;
   var animLoop = this;
-  this.addAnimation(function delayedAnimation(time){
+  this.addAnimation(function intervalAnimation(time){
     if(time - startTime >= interval){
       animation();
       startTime = time;
     }
   });
+}
+
+AnimationLoop.prototype.getTime = function(){
+  return this._time
 }
 
 module.exports = AnimationLoop;

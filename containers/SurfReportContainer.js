@@ -12,7 +12,7 @@ class SurfReportContainer extends React.Component {
   }
   render () {
     let ary = this.props.surfData;
-    
+    console.log(ary, "I got here", this.props.indexHovered, ary[this.props.indexHovered].surfMax)
     return (
        <SurfReportDashboard
           regionName = {ary[this.props.indexHovered].regionAlias}

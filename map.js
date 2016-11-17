@@ -6,40 +6,28 @@ import surfData from "./data";
 import surfDataBuilder from "./data/surfDataBuilder";
 let surfSpots = surfDataBuilder(surfData);
 
-function Map() {
-  this.locations = [];
-  this.loaded = false;
-}
-
-Map.prototype.initMap = function initMap(render){
+function Map(){
+  this.markers = [];
+  // init the map instance
   this.map = new google.maps.Map(document.getElementById("map"), {
     center: window._INITIAL_SETTINGS_.center,
     disableDefaultUI: true,
     zoom: 6
   });
+
   this.map.setOptions({styles: styles});
-
-  this.map.addListener("bounds_changed", function(){
-    let hasPath = window._INITIAL_SETTINGS_.spot !== "root";
-    // into marker animaiton to run only once
-    if(!this.loaded){
-
-      this.loaded = true;
-      for (let i = 0; i < surfSpots.length; i++) {
-        let spot = surfSpots[i];
-        //todo: use rAF wrapper;
-        setTimeout(function(){
-          this.addSpotMarker(spot)
-        }.bind(this),i * 100);
-      }
-      // call simulation when bounds change
-      // if(hasPath){
-        render();
-      // }
+  
+  // drop the markers when the map loads
+  this.map.addListener("bounds_changed", ()=> {
+    for (let i = 0, len = surfSpots.length; i < len; i++) {
+      let spot = surfSpots[i];
+      setTimeout(()=>{
+        this.addSpotMarker(spot)
+      },i * 100);
     }
-  }.bind(this));
-  //assign instance to global 
-  window.initMap.mapInstance = this;
+  });
+
+  return this
 }
 
 Map.prototype.getMap = function getMap(){
@@ -60,37 +48,35 @@ Map.prototype.addSpotMarker = function addSpotMarker(loc){
     map: this.map
   });
   spot.details = loc;
-  spot.addListener("click", function() {
+  spot.addListener("click", ()=> {
     this.map.setZoom(6);
     browserHistory.push(loc.spot)
-  }.bind(this));
-  this.locations.push(spot);       
+  });
+  this.markers.push(spot);       
 }
 
 Map.prototype.changeLoc = function changeLoc(loc){
-  console.log("changing loc")
-  //todo: clean this up
-  let spot = this.locations.filter(function(item){
-    return item.details && item.details.spot === loc;
-  })
-  if(spot.length){
-    this.map.panTo(spot[0].getPosition());
-  } else {
-    // go to home root
+  if(loc){
+    for (var i = 0, len = this.markers.length, marker; i < len; i++) {
+      marker = this.markers[i];
+      if(marker.details && marker.details.spot === loc){
+        this.map.panTo(marker.getPosition())
+        return;
+      }
+    }
     this.map.panTo(window._INITIAL_SETTINGS_.center)
-    //todo: dispatch close event
   }
 }
 
 
 Map.prototype.addSingleBoundsListener = function addSingleListener(cb, param){
   let called = false;
-  this.map.addListener("bounds_changed", function(){
+  let listener = this.map.addListener("bounds_changed", ()=>{
     if(!called){
       called = true;
       cb(param)
     } else {
-      google.maps.event.clearListeners(map, "bounds_changed");
+      google.maps.event.removeListener(listener);
     }
   });
 }
