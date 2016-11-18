@@ -1,13 +1,13 @@
 import React from 'react';
 import MapComponent from '../components/MapComponent';
 
-let initialCenter = { lng: -90.1056957, lat: 29.9717272 }
+let initialCenter = {"lat": 37.309, "lng": -122.400};
 
 let MapContainer = React.createClass({
 
   getInitialState () {
     return {
-      surfspot: window._INITIAL_SETTINGS_.spot || null, 
+      surfspot:null, 
       data: null
     }
   },
