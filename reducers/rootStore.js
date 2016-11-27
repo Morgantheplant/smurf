@@ -1,14 +1,19 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { clockReducer } from './clockReducer'
 import { surfReportReducer } from './surfReportReducer'
-// Create store using the reducer
+import { mapReducer } from './mapReducer';
 
-// add more reducers here alter
 let mainStore = combineReducers({
   clockReducer,
-  surfReportReducer
+  surfReportReducer,
+  mapReducer
 });
-const store = createStore(mainStore)
-//const store = createStore(clockReducer);
+
+
+const store = createStore(
+  mainStore,
+  applyMiddleware(thunk)
+);
 
 export default store;

@@ -7,7 +7,6 @@ function AnimationLoop(){
   this.isRunning = false;
   this.startTime = 0;
   this._time = 0;
-  window.animation = this.animations
   this.updateLoop = function updateLoop(time){ 
     this._time = time;
     //loop through all animations call them and pass in time

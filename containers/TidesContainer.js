@@ -1,5 +1,5 @@
 import React from 'react';
-import Tides from '../components/Tides';
+import TideComp from '../components/TideComp';
 import { connect } from 'react-redux';
 
 class TidesContainer extends React.Component {
@@ -8,7 +8,12 @@ class TidesContainer extends React.Component {
   }
   render() {
     return (
-       <Tides surfData={this.props.surfData} targetIndex={this.props.indexHovered} />)
+       <TideComp 
+          surfData={this.props.surfData} 
+          targetIndex={this.props.indexHovered} 
+          height={100}
+          width={200}
+          />)
   }      
 }
 

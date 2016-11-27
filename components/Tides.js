@@ -4,53 +4,53 @@ import TideLabel from './TideLabel';
 
 //import {Tide} from '../public/data.json'
 //todo: see how es2015 imports handles json 
-let Tide = require('../data/surfData.json').Tide;
+// let Tide = require('../data/surfData.json').Tide;
 
 //todo: add reducer here, replace forEach with for loops + micro optimizations where possible
 
 //todo: turn these into props
-let tidesArray = Tide.dataPoints;
-let width = 200;
-let height = 100;
-let lineColors = "gray";
-let labelColors = "white";
-let nightShade = "rgba(0,0,0)";
-let days = 1;
-let dayRange = (days * 23);
-let highest = 0;
-let lowest = 0;
-let highestData = {};
-let lowestData = {};
-let specialTides = [];
-let sunriseSunset = [];
-let targetDays = [];
+// let tidesArray = Tide.dataPoints;
+// let width = 200;
+// let height = 100;
+// let lineColors = "gray";
+// let labelColors = "white";
+// let nightShade = "rgba(0,0,0)";
+// let days = 1;
+// let dayRange = (days * 23);
+// let highest = 0;
+// let lowest = 0;
+// let highestData = {};
+// let lowestData = {};
+// let specialTides = [];
+// let sunriseSunset = [];
+// let targetDays = [];
 
-tidesArray.forEach(function(item, index){
-  let time = new Date(item.time * 1000);
-  let dayOfMonth = time.getDate();
-  let hour = time.getHours();
-  let minutes = time.getMinutes();
-  let amPm = (hour < 12) ? " am" : " pm";
-  let hrFormatted = (hour < 12) ? hour : hour - 12;
-  let minutesFormatted = (minutes < 10) ? "0" + minutes : minutes;
-  item.readAbleTime = hrFormatted + ":" + minutesFormatted + amPm;
-  item.timeData = hour + (minutes/60);
-  item.rangeX = normalizeRange(0,width,0,dayRange,item.timeData, time, hour);
-  item.rangeY = normalizeRange(0,height,8,-4,item.height, time, hour);
-  item.day = dayOfMonth;
-  if(!targetDays["index"+dayOfMonth]){
-    targetDays.push(dayOfMonth);
-    targetDays["index"+dayOfMonth] = true;
-  }
-});
+// tidesArray.forEach(function(item, index){
+//   let time = new Date(item.time * 1000);
+//   let dayOfMonth = time.getDate();
+//   let hour = time.getHours();
+//   let minutes = time.getMinutes();
+//   let amPm = (hour < 12) ? " am" : " pm";
+//   let hrFormatted = (hour < 12) ? hour : hour - 12;
+//   let minutesFormatted = (minutes < 10) ? "0" + minutes : minutes;
+//   item.readAbleTime = hrFormatted + ":" + minutesFormatted + amPm;
+//   item.timeData = hour + (minutes/60);
+//   item.rangeX = normalizeRange(0,width,0,dayRange,item.timeData, time, hour);
+//   item.rangeY = normalizeRange(0,height,8,-4,item.height, time, hour);
+//   item.day = dayOfMonth;
+//   if(!targetDays["index"+dayOfMonth]){
+//     targetDays.push(dayOfMonth);
+//     targetDays["index"+dayOfMonth] = true;
+//   }
+// });
 
-function normalizeRange(newmin, newmax, oldmin, oldmax, oldval, time, hour){
-  newmin = newmin || 0;
-  let newRange = newmax - newmin; // height or width, new in 0
-  let oldRange = oldmax - oldmin;
-  let newValue = (((oldval - oldmin)*newRange)/oldRange) + newmin;
-  return Math.round(newValue);
-}
+// function normalizeRange(newmin, newmax, oldmin, oldmax, oldval, time, hour){
+//   newmin = newmin || 0;
+//   let newRange = newmax - newmin; // height or width, new in 0
+//   let oldRange = oldmax - oldmin;
+//   let newValue = (((oldval - oldmin)*newRange)/oldRange) + newmin;
+//   return Math.round(newValue);
+// }
 
 class Tides extends React.Component {
   constructor (props) {
@@ -80,7 +80,7 @@ class Tides extends React.Component {
     let newTideState = [];
     this.addHighLowTides(cx)
     //possibly change to for loop
-    tidesArray.forEach(function(item, index){
+    this.props.tidesArray.forEach(function(item, index){
       if(item.day === targetDays[this.props.targetIndex]){
         if(item.type === "NORMAL"){
           cx.lineTo(item.rangeX, item.rangeY)

@@ -1,4 +1,13 @@
 export const TICK = 'TICK';
 export const ON_HOVER_DAY = 'ON_HOVER_DAY';
 export const OFF_HOVER_DAY = 'OFF_HOVER_DAY';
+export const REQUEST_LOCATIONS = 'REQUEST_LOCATIONS';
+export const RECEIVE_LOCATIONS = 'RECEIVE_LOCATIONS';
+export const REQUEST_REPORT = 'REQUEST_REPORT';
+export const RECEIVE_REPORT = 'RECEIVE_REPORT';
+export const CLEAR_REPORT = 'CLEAR_REPORT';
+
+
+
+
 

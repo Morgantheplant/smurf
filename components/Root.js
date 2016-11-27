@@ -8,7 +8,7 @@ import TidesContainer from '../containers/TidesContainer';
 import SurfReportContainer from '../containers/SurfReportContainer';
 import CloseButton from '../components/CloseButton';
 import mainAnimationLoop from '../mainAnimationLoop';
-import startSim from '../mainAnimation';
+import { startSim, clearSim  }from '../mainAnimation';
 
 import store from '../reducers/rootStore';
 

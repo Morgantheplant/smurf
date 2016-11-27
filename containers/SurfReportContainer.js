@@ -4,7 +4,6 @@ import SurfReport from '../components/SurfReport';
 import SurfReportDashboard from '../components/SurfReportDashboard';
 import { connect } from 'react-redux';
 
-import surf from '../data/surfData.json';
 
 class SurfReportContainer extends React.Component {
    constructor (props) {
@@ -12,9 +11,10 @@ class SurfReportContainer extends React.Component {
   }
   render () {
     let ary = this.props.surfData;
-    console.log(ary, "I got here", this.props.indexHovered, ary[this.props.indexHovered].surfMax)
     return (
        <SurfReportDashboard
+          date={ary[this.props.indexHovered].date }
+          dayOfWeek={ary[this.props.indexHovered].dayOfWeek}
           regionName = {ary[this.props.indexHovered].regionAlias}
           location={ary[this.props.indexHovered].dayofWeek}
           datePretty={ary[this.props.indexHovered].date}

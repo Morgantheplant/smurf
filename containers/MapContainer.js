@@ -1,22 +1,46 @@
 import React from 'react';
 import MapComponent from '../components/MapComponent';
+import { getLocations, getLocationData, getReport, clearReport } from '../actions/mapActions';
+import { browserHistory } from "react-router";
+import { connect } from 'react-redux';
+import mainAnimationLoop from '../mainAnimationLoop';
+import { clockTick } from '../actions/clockActions';
 
 let initialCenter = {"lat": 37.309, "lng": -122.400};
 
-let MapContainer = React.createClass({
 
-  getInitialState () {
-    return {
-      surfspot:null, 
-      data: null
-    }
-  },
+class MapContainer extends React.Component{
+
+  constructor(props) {
+    super(props);
+    this.getLocations = this.getLocations.bind(this);
+    this.updateSpot = this.updateSpot.bind(this);
+    this.close = this.close.bind(this);
+  }
+
+  getLocations(){
+    const { dispatch } = this.props;
+    dispatch(getLocations());
+  }
+
+  getLocationData(location){
+    const { dispatch } = this.props;
+    dispatch(getLocationData());
+  }
+
+  close() {
+    browserHistory.push("/");
+  }
 
   componentDidMount() {
     // fetch data initially in scenario 2 from above
-    this.updateSpot()
-    
-  },
+    this.updateSpot() 
+    const { dispatch } = this.props;
+    mainAnimationLoop.start();
+    mainAnimationLoop.setAnimationInterval(()=>{
+       dispatch(clockTick())
+    }, 1000)
+  }
 
   componentDidUpdate (prevProps) {
     // respond to parameter change 
@@ -25,38 +49,39 @@ let MapContainer = React.createClass({
     if (newSpot !== oldSpot){
       this.updateSpot()
     }
-  },
+  }
 
   componentWillUnmount () {
     // allows us to ignore an inflight request
     this.ignoreUpdate = true
-  },
+  }
 
   updateSpot () {
     let loc = this.props.params.surfspot;
-    if(!this.ignoreUpdate && loc){
-      $.get( "/data/" + loc, function( data ) {
-        var item = dataBuilder(data);
-        this.setState({
-          surfspot:loc, 
-          data: item
-        });
-      }.bind(this), "json" );
-    } else if (!loc){
-      this.setState({
-        surfspot:null,
-        data: null
-      })
+    const { dispatch } = this.props;
+    if(loc){
+      dispatch(getReport({id:loc}))
+    } else {
+      dispatch(clearReport())
     }
-  },
+  }
 
   render () {
     return ( <MapComponent 
+              getLocations={this.getLocations}
+              locations={this.props.locations}
               initialCenter={initialCenter}
-              surfspot={this.state.surfspot} 
-              surfData={this.state.data} 
+              surfData={this.props.currentReport}
+              close={this.close} 
               />);
   }
-})
+}
 
-export default MapContainer;
+function mapStateToProps(state) {
+    return {
+      locations: state.mapReducer.locations,
+      currentReport: state.mapReducer.currentReport
+    };
+}
+
+export default connect(mapStateToProps)(MapContainer);

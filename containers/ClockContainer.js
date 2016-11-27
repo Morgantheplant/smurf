@@ -3,10 +3,6 @@ import classNames from 'classnames';
 import Clock from '../components/Clock';
 import { connect } from 'react-redux';
 
-//todo: make sure container is properly set up
-// remove settimeout and refactor into rAF render loop
-
-//possibly add these values to store
 const colorOn = '#007297';
 const colorOff = '#021019';
 

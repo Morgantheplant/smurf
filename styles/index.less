@@ -18,7 +18,7 @@ html, body {
 
 
 
-#map, #react-container {
+#map, #react-container, .base-container {
   height: 100%;
   width:100%
 }
@@ -29,9 +29,13 @@ html, body {
   left: 50%;
   margin-left: (@mainSize/-2);
   overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1s;
+  // // opacity: 0;
+  // // visibility: hidden;
+  // transition: opacity 1s;
+  pointer-events: none;
+  rect{
+    pointer-events: visible;
+  }
   z-index:2;
   &:hover div{
   opacity:.5;

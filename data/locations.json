@@ -1,0 +1,66 @@
+{
+  "locations":[{
+      "name":"Big Sur",
+      "spot":"bigsur",
+      "code":2960,
+      "lat":33.542683103536,
+      "lon":-117.791598864074
+    },
+    {
+      "name":"Ensenada",
+      "spot":"nbaja",
+      "code":2158,
+      "lat":32.427000000000,
+      "lon":-117.099000000000
+    },
+    {
+      "name":"Santa Barabara",
+      "spot":"sb",
+      "code":2141,
+      "lat":34.374,
+      "lon":-119.571
+    },
+    {
+      "name":"Santa Monica Pier",
+      "spot":"la",
+      "code":2142,
+      "lon":-118.49717835,
+      "lat":33.899
+    },
+    {
+      "name":"Morro Bay",
+      "spot":"slo",
+      "code":2962,
+      "lat":35.250,
+      "lon":-121.250
+    },
+    {
+      "name":"Ocean Beach",
+      "spot":"ob",
+      "code":4127,
+      "lon":-123.500,
+      "lat":37.809000000000
+    },
+    {
+      "name":"Oceanside",
+      "spot":"nsd",
+      "code":2143,
+      "lat":33.071,
+      "lat":33.071
+    },
+    {
+      "name":"Santa Cruz",
+      "spot":"sc",
+      "code":2958,
+      "lat":37.095208726816,
+      "lon":-122.280547470777
+    },
+    {
+      "name":"South Orange County",
+      "spot":"soc",
+      "code":2950,
+      "lat":33.456,
+      "lon":-117.747
+    }
+  ]
+}  

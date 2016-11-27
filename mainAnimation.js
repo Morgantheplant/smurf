@@ -4,10 +4,10 @@ import mainAnimationLoop from './mainAnimationLoop';
 import store from './reducers/rootStore';
 import { hoverDay } from './actions/clockActions';
  
-let surf = require('./data'); 
+// let surf = require('./data'); 
 
-let svgns = "http://www.w3.org/2000/svg",
-ary = dataBuilder(surf.ob)
+let svgns = "http://www.w3.org/2000/svg";
+// ary = dataBuilder(surf.ob)
 
 let width = 43,
   height = 20,
@@ -33,7 +33,6 @@ function SurfReportAnimation(options){
 }
 
 SurfReportAnimation.prototype.reset = function reset(){
-  debugger
   this.mainAnimationLoop.removeAnimation(this._matterEngine);
   this.mainAnimationLoop.removeAnimation(this._render);
   this.physicsBodies = [];
@@ -48,6 +47,8 @@ SurfReportAnimation.prototype.createBodies = function createBodies(days){
   }
   this.engine = Engine.create();
   this.mainBackground.style.display = "block";
+   // this.mainBackground.style.visibility = "visible"
+   //  this.mainBackground.style.opacity = 1
   for (var i = 0; i < days.length; i++) {
     let topRect = this.createTopBar(i);
     let bottomRect = this.createBottomBar(i);
@@ -151,15 +152,16 @@ SurfReportAnimation.prototype.render = function render() {
 };
 
 SurfReportAnimation.prototype.init = function init(data){
-  debugger
   //create bodies will reset if already called
   this.createBodies(data);
   this.engine.world.gravity.y = -0.1;
   World.add(this.engine.world, this.physicsBodies.concat(this.vertSprings.concat(this.horzSprings)));
   // run the engines
   // store reference to engine and render calls
-  this.mainAnimationLoop.addAnimation(this.matterEngine.bind(this));
-  this.mainAnimationLoop.addAnimation(this.render.bind(this));
+  this._matterEngine = this.matterEngine.bind(this);
+  this._render = this.render.bind(this)
+  this.mainAnimationLoop.addAnimation(this._matterEngine);
+  this.mainAnimationLoop.addAnimation(this._render);
 }
 
 SurfReportAnimation.prototype.matterEngine = function matterEngine(){
@@ -194,39 +196,46 @@ function mouseOutEvent(){
 
 
 let el = document.getElementById('world');
-let animationInitialized;
+let animationInstance;
 let currentViz;
 let boundAnimation;
 
-module.exports = function startSim(viz){
-  debugger
-  //hide svg elements if called with no arguments and it has already been initialized
-  if(!surf[viz] || viz === "root"){
-    if(animationInitialized){
-      mainAnimationLoop.removeAnimation(boundAnimation);
-      animationInitialized.destroyElements();
-      return 
-    }
-  }
-  // if animation hasnt been initialized
-  if(!animationInitialized){
-    animationInitialized = new SurfReportAnimation({
+function createInstance (){
+  animationInstance = new SurfReportAnimation({
       $el: el,
       mainAnimationLoop: mainAnimationLoop
     });
+}
+
+function startAnimation(raw){
+  currentViz = raw.id;
+  boundAnimation = animationInstance.init(raw.forecast); 
+}
+
+export function startSim(raw){
+  raw = raw || {};
+  var hasForecast = raw.forecast && raw.forecast.length;
+  //hide svg elements if called with no arguments and it has already been initialized
+  if(!hasForecast && animationInstance){
+    clearSim();
+    return
+  }
+  // create animation if it hasnt been initialized
+  if(!animationInstance && hasForecast){
+    createInstance();
   }
   // make sure viz exists and start animation 
-  if(viz != currentViz && surf[viz]){
-    currentViz = viz;
-    let sim = dataBuilder(surf[viz]);
-    boundAnimation = animationInitialized.init(sim);
-    
-  }
-  //handle unknown routes and home routes
-  if(viz != currentViz){
-    currentViz = viz;
+  if(hasForecast && raw.id !== currentViz){
+    startAnimation(raw);
   }
 }
+
+export function clearSim(){
+  mainAnimationLoop.removeAnimation(boundAnimation);
+  animationInstance && animationInstance.destroyElements()
+}
+
+
 
 
 

@@ -6,7 +6,6 @@ class SurfReportDashboard extends React.Component {
     super(props)
   }
   render () {
-    console.log(this.props.surfHeightRange, "this should be the range displayed")
     return (
     <div id="firstReport" classNames="topBoxes surfReport">
       <div className="waveHeight">
@@ -21,7 +20,10 @@ class SurfReportDashboard extends React.Component {
         </ul>
       </div>
       <div className="clear"></div>
-      <p className="hoverHide">{this.props.regionName +": "+ this.props.forecaseSummaryText  }</p>
+      <p className="hoverHide">{ 
+        this.props.dayOfWeek + " - " 
+        + this.props.regionName + ": " + this.props.forecaseSummaryText
+        + this.props.date }</p>
 
     </div>
       )
