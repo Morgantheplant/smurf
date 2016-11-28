@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "react-dom";
-import MapContainer from './containers/MapContainer'
 import { Router, Route, browserHistory } from "react-router";
 import { Provider } from "react-redux";
+import MapContainer from "./containers/MapContainer.jsx";
 import store from "./reducers/rootStore";
 
-window.initReact = function initReact(){  
+window.initReact = function initReact() {
   return render((
     <Provider store={store}>
       <Router history={browserHistory}>
@@ -13,5 +13,5 @@ window.initReact = function initReact(){
         <Route path="/:surfspot" component={MapContainer} />
       </Router>
     </Provider>
-  ), document.getElementById('react-container'));
-}
+  ), document.getElementById("react-container"));
+};

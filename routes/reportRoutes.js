@@ -1,73 +1,54 @@
 var reportRoutes = require('express').Router();
 var locationData = require('../data/locations.json');
-var surfDataBuilder = require('../data/surfDataBuilder');
 var request = require('request')
 var dataBuilder = require('../dataBuilder');
-var ob = require('../data/ob.json')
 var cacheMap = {};
-
+var forecastCache = {};
 
 
 reportRoutes.get('/:id', function(req, res){
-  // create add all codes if none exist
+  // create map of all codes if none exist
   if(!Object.keys(cacheMap).length){
     var locs = locationData.locations;
     locs.forEach(function(item){
       cacheMap[item.spot] = item.code;
     })
   }
-
+  // lookup the code
   var code = cacheMap[req.params.id];
-  //res.json(dataBuilder({ report: body}))
-  request(`http://api.surfline.com/v1/forecasts/${code}`, function(error, response, body){
-    if (!error && response.statusCode == 200) {
-      res.json({ report: dataBuilder(body) });
-    }
-  });
-  
+  if(code){
+    getForecast(req, res, code)
+  } else {
+    // redirect to homepage if not found
+    res.redirect('/');
+  }
 });
 
-// var {
-//       "bigsur": "bigsur",
-//       "2960": "bigsur",
-//     },
-//     {
-//       "name":"Ensenada",
-//       "nbaja": "nbaja",
-//       "2158": "nbaja"
-//     },
-//     {
-//       "name":"Santa Barabara",
-//       "sb": "sb",
-//       "2141": "sb",
-//     },
-//     {
-//       "name":"Santa Monica Pier",
-//       "la": "la",
-//       "2142": "la"
-//     },
-//     {
-//       "name":"Morro Bay",
-//       "slo": "slo",
-//       "2962": "slo",
-//     },
-//     {
-//       "name":"Ocean Beach",
-//       "ob": "ob",
-//       "4127": "ob"
-//     },
-//     {
-//       "name":"Oceanside",
-//       "nsd": "nsd",
-//       "2143": "nsd",
-//     },
-//     {
-//       "name":"Santa Cruz",
-//       "2958": "sc",
-//     },
-//     {
-//       "name":"South Orange County",
-//       "2950": "soc"
-//     }
+function getForecast(req, res, code){
+  // get date for today
+  var now = new Date();
+  var dayDate = now.getDay() + now.getMonth() + now.getYear();
+  // check if report has been stored for today
+  if(forecastCache[code] && forecastCache[code].date === dayDate ){
+     // send cached report
+     res.json(forecastCache[code].forecast);
+  } else {
+    // request new report if last report was not from today
+    request(`http://api.surfline.com/v1/forecasts/${code}`, function(error, response, body){
+      if (!error && response.statusCode == 200) {
+        var report = { report: dataBuilder(body) }
+        // cache the result with current date
+        forecastCache[code] = {
+          forecast: report,
+          date: dayDate 
+        };
+        // send report 
+        res.json(report);
+      }
+    });
+
+  } 
+}
+
 
 module.exports = reportRoutes;

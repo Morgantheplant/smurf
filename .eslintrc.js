@@ -24,6 +24,8 @@ module.exports = {
             "error",
             "always"
         ],
-        "comma-dangle": 0
+        "comma-dangle": 0,
+        "prop-types": 0,
+        "jsx-filename-extension": 0
     }
 };
