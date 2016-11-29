@@ -1,10 +1,14 @@
 import React from "react";
 
-const CloseButton = function(props) {
-  return (
-    <div 
-      className="close-button" 
-      onClick={this.props.onClose}>X</div>);
+class CloseButton extends React.Component {
+  render(){
+    return (
+      <div 
+        className="close-button" 
+        onClick={this.props.onClose}>X
+      </div>
+    );
+  }
 }
 
 CloseButton.propTypes = {
