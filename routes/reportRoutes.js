@@ -1,7 +1,7 @@
 var reportRoutes = require('express').Router();
 var locationData = require('../data/locations.json');
 var request = require('request')
-var dataBuilder = require('../dataBuilder');
+var dataBuilder = require('../data/dataBuilder');
 var cacheMap = {};
 var forecastCache = {};
 

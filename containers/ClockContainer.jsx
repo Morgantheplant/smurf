@@ -60,7 +60,7 @@ class ClockContainer extends React.Component {
 }
 
 ClockContainer.propTypes = {
-  time: React.PropTypes.string
+  time: React.PropTypes.number
 };
 
 

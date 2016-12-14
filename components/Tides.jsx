@@ -84,7 +84,7 @@ class Tides extends React.Component {
   render() {
     const { width, height, surfData, targetIndex } = this.props;
     let specialTides = [];
-    if (targetIndex) {
+    if (targetIndex >= 0) {
       const { tidesData } = surfData;
       const { specialTidesDaily, orderedDays } = tidesData;
       specialTides = specialTidesDaily[orderedDays[targetIndex]];

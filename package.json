@@ -30,6 +30,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "matter": "^0.2.0",
     "matter-js": "^0.10.0",
+    "moment": "^2.17.1",
     "nodemon": "^1.9.2",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",

@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 5000;
 var exphbs = require('express-handlebars');
 var routes = require('./routes');
 

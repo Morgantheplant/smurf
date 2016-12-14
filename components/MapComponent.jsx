@@ -19,6 +19,7 @@ class MapComponent extends React.Component {
   componentDidMount() {
     this.map = this.createMap();
     google.maps.event.addListenerOnce(this.map, "idle", this.props.getLocations);
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,6 +33,7 @@ class MapComponent extends React.Component {
       google.maps.event.addListenerOnce(this.map, "bounds_changed", () => {
         mainAnimationLoop.setAnimationTimeout(() => {
           startSim(surfData);
+          console.log(this.map.getBounds(), "this is the bounds")
         }, 1000);
       });
       this.map.panTo(new google.maps.LatLng(
