@@ -64,6 +64,7 @@ class MapComponent extends React.Component {
     const mapOptions = {
       zoom: 6,
       center: this.mapCenter(),
+      streetViewControl: false,
       styles
     };
     return new google.maps.Map(this.mapNode, mapOptions);

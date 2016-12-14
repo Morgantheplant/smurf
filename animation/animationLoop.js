@@ -11,7 +11,10 @@ function AnimationLoop(){
     this._time = time;
     //loop through all animations call them and pass in time
     for(var i = 0, len = this.animations.length; i < len; i++){
-        this.animations[i](time);
+        // if(typeof  !== "function"){
+        //      debugger
+        // }
+        this.animations[i] && this.animations[i](time);
     }
     //store reference so we can cancel it later
     this._rAF = rAF(this.updateLoop);

@@ -24,8 +24,8 @@ class SurfReportContainer extends React.Component {
 }
 
 SurfReportContainer.propTypes = {
-  indexHovered: React.PropTypes.string,
-  surfData: React.PropTypes.object
+  indexHovered: React.PropTypes.number,
+  surfData: React.PropTypes.array
 };
 
 function mapStateToProps(state) {

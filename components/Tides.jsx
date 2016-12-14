@@ -108,9 +108,9 @@ class Tides extends React.Component {
 }
 
 Tides.propTypes = {
-  width: React.PropTypes.string,
-  height: React.PropTypes.string,
-  targetIndex: React.PropTypes.string,
+  width: React.PropTypes.number,
+  height: React.PropTypes.number,
+  targetIndex: React.PropTypes.number,
   surfData: React.PropTypes.object
 };
 
