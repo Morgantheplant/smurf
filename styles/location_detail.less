@@ -1,0 +1,28 @@
+.location_detail_background{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.25);
+  z-index:15;
+  transition: opacity 1s;
+  text-align: center;
+  iframe{
+    margin: 10px auto;
+  }
+  .location_detail_modal{
+    margin: 25px auto;
+    width: 700px;
+    transform-origin:center;
+    text-align: center;
+    background: rgba(21,106,162,.4);
+    animation:  snapInScale .25s;
+    box-shadow: 0 0 100px rgba(0,0,0,.5);
+    p{
+      color:white;
+      background: rgba(2,16,24,.63);
+    }
+  }
+
+}

@@ -1,25 +1,29 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
+import LocationDetailsButton from '../containers/LocationDetailsButton.jsx';
+import classNames from 'classnames';
 
-class SurfReportDashboard extends React.Component {
+class SurfReportDashboard extends Component {
   render() {
+    console.log(this.props.isMenuOpen, "is menu open?")
     return (
-      <div id="firstReport" classNames="topBoxes surfReport">
+      <div id="firstReport" className={this.props.isMenuOpen ? "blur" : "" }>
         <div className="waveHeight">
-          <h2 className="hoverHide">{this.props.surfHeightRange}</h2><span>ft</span>
+          <h2 >{this.props.surfHeightRange}</h2><span>ft</span>
         </div>
         <div className="conditionIcons">
-          <ul>
+          <ul className="report">
             <li>{this.props.conditionsText}</li>
-            <li className="hoverHide">{this.props.surfHeightRangeText}</li>
-            <li className="hoverHide">Rising 12:00pm .7m</li>
-            <li><span>Water : 72</span> <span>Air : 80</span></li>
+            <li >{this.props.windRange}</li>
+            <li >{this.props.surfHeightRangeText}</li>
+            <li><span className="water">Water : { this.props.waterTemp }</span> <span className="air">Air : { this.props.airTemp }</span></li>
           </ul>
+
         </div>
+        <LocationDetailsButton code={this.props.code}/>
         <div className="clear" />
-        <p className="hoverHide">{
+        <p >{
           `${this.props.dayOfWeek} - ${this.props.regionName}: 
           ${this.props.forecaseSummaryText} ${this.props.date}` }</p>
-
       </div>
       );
   }
@@ -28,14 +32,17 @@ class SurfReportDashboard extends React.Component {
 SurfReportDashboard.propTypes = {
   // location: React.PropTypes.string,
   // datePretty: React.PropTypes.string,
-  surfHeightRange: React.PropTypes.string,
-  surfHeightRangeText: React.PropTypes.string,
-  dayOfWeek: React.PropTypes.string,
-  regionName: React.PropTypes.string,
-  date: React.PropTypes.string,
-  // conditionIcon: React.PropTypes.string,
-  conditionsText: React.PropTypes.string,
-  forecaseSummaryText: React.PropTypes.string
+  surfHeightRange: PropTypes.string,
+  surfHeightRangeText: PropTypes.string,
+  dayOfWeek: PropTypes.string,
+  regionName: PropTypes.string,
+  date: PropTypes.string,
+  nextTide: PropTypes.string,
+  // conditionIcon: PropTypes.string,
+  conditionsText: PropTypes.string,
+  forecaseSummaryText: PropTypes.string,
+  code: PropTypes.string,
+  isMenuOpen: PropTypes.bool
 };
 
 export default SurfReportDashboard;

@@ -34,22 +34,9 @@
 
 @mainSize:   800px;
 
-
-// #react-container{
-//   position:absolute;
-//   top:20px;
-//   width: @mainSize;
-//   height:@mainSize;
-//   left:50%;
-//   margin-left: (@mainSize / -2);
-//   background: @blueBgColor;
-//   .rounded(50%);
-//   .drop-shadow(0, 0, 200px, 0.75);
-// }
-
-
 div#firstReport {
   color: white;
+  animation: snapInScale .1s;
 }
 
 img {
@@ -99,13 +86,13 @@ h4 {
 
 #firstReport {
   .topBoxes;
-  .transition(.25s, ease-out);
   position: absolute;
   top: 10%;
   left: 0;
   width: 58%;
   color: #fff;
   font-weight: 200;
+  transition: text-shadow .1s easeOut;
   h2 {
     font-size: 125px;
     display: inline-block;
@@ -118,13 +105,13 @@ h4 {
     padding-top: 10px;
     text-align: justify;
   }
-  ul {
+  ul.report {
     list-style: none;
     padding-top: 10px;
     li {
       padding: 0 0 0 30px;
       margin: 5px 0;
-      transition: all .5s ease;
+      // transition: all .5s ease;
       &:first-child {
         background: url("@{filePath}@{goodConditionsIcon}") no-repeat;
         background-size: contain;
@@ -139,71 +126,31 @@ h4 {
         background-size: contain;
         padding-left: 30px;
       }
-      span {
+      span.water {
         margin-left: -30px;
-        margin-right: 40px;
+        margin-right: 15px;
       }
+
+    }
+  }
+  &.blur{
+    color: transparent;
+    text-shadow: 0px 0px 10px white;
+    img{
+      -webkit-filter: blur(3px);
+      filter: blur(3px);
+    }
+    p:before {
+      content: '';
+      width: 100%;
+      height: 1px;
+      box-shadow: 1px -5px 3px #39e4fd;
+      display: block;
+      margin-bottom: -1px;
+      transform: translateY(-7px);
+    }
+    p{
+      border-top: 2px solid rgba(0,0,0,0);
     }
   }
 }
-
-// #tideReport {
-//   position: absolute;
-//   top: 10%;
-//   right: 0;
-//   transition: all .5s ease;
-// }
-// #tideReport p {
-//   margin: 2px;
-// }
-// #tideReport span {
-//   opacity: .25;
-//   margin-left: 15px;
-//   cursor: pointer;
-// }
-// #tideReport span:hover {
-//   color: #39e4fd;
-//   opacity: 1
-// }
-// #futureConditions {
-//   width: 150px;
-//   position: absolute;
-//   left: 130px;
-//   transition: all .25s ease;
-//   opacity: 0;
-//   bottom:215px;
-// }
-// #futureConditions ul {
-//   list-style: none;
-// }
-// #futureConditions ul li img {
-//   width: 20px;
-// }
-// #dates {
-//   position: absolute;
-//   bottom: -10px;
-//   padding: 0;
-//   left: 15px;
-// }
-// #dates li {
-//   display: inline-block;
-//   float: left;
-//   margin: 0 2px;
-//   font-size: 12px;
-//   width: 22px;
-//   padding: 0 10px;
-//   text-transform: uppercase;
-//   opacity: .25;
-//   transition: all .5s ease;
-// }
-// div.direction{
-//   position:absolute;
-//   top:86%;
-//   left:11%;
-//   transform:rotate(-140deg);
-//   opacity:.25;
-// }
-// div.direction p{
-//   padding:0;
-//   margin:0;
-// }

@@ -2,11 +2,15 @@ var reportRoutes = require('express').Router();
 var locationData = require('../data/locations.json');
 var request = require('request')
 var dataBuilder = require('../data/dataBuilder');
+var fixture = require('../data/fixture.json');
 var cacheMap = {};
 var forecastCache = {};
 
 
 reportRoutes.get('/:id', function(req, res){
+  if(req.params.id === 'test'){
+    return res.json({ report: dataBuilder(fixture) });
+  }
   // create map of all codes if none exist
   if(!Object.keys(cacheMap).length){
     var locs = locationData.locations;

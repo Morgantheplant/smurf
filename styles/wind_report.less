@@ -1,0 +1,41 @@
+@reportTeal: #007297;
+
+.wind-container{
+  background: rgba(2, 16, 24, 0.63);
+  padding-bottom:10px;
+  margin-top: 15px;
+  height: 120px;
+  .wind-text{
+    color: @reportTeal;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .knots{
+    display: inline-block;
+    color: white;
+    position:relative;
+    margin:18px;
+    font-size:12px;
+    width:14px;
+    text-align: center;
+  }
+  .wind-time{
+    position: absolute;
+    font-size: 10px;
+    left: 50%;
+    transform: translate(-50%, 11px);
+    color: @reportTeal;
+  }
+  .arc{
+    position: absolute;
+    border-radius: 50%;
+    left:50%;
+    top:50%;
+    border: 0px transparent;
+    border-top: 1px solid @reportTeal;
+    color: @reportTeal;
+    font:10px;
+  }
+
+}

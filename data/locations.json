@@ -4,42 +4,129 @@
       "spot":"bigsur",
       "code":2960,
       "lat":33.542683103536,
-      "lon":-117.791598864074
+      "lon":-117.791598864074,
+      "breaks":[]
     },
     {
       "name":"Ensenada",
       "spot":"nbaja",
       "code":2158,
       "lat":32.427000000000,
-      "lon":-117.099000000000
+      "lon":-117.099000000000,
+      "breaks":[]
     },
     {
       "name":"Santa Barabara",
       "spot":"sb",
       "code":2141,
       "lat":34.374,
-      "lon":-119.571
+      "lon":-119.571,
+      "breaks":[
+        {
+          "name": "Jalama",
+          "id": 5038
+        },
+        {
+          "name": "Campus Point",
+          "id": 4997
+        },
+        {
+          "name": "Leadbetter",
+          "id": 4990
+        },
+        {
+          "name": "Sandspit", 
+          "id": 4998
+        } 
+      ]
     },
+
+
     {
       "name":"Santa Monica Pier",
       "spot":"la",
       "code":2142,
+      "lat":33.899,
       "lon":-118.49717835,
-      "lat":33.899
+      "breaks":[]
     },
     {
       "name":"Morro Bay",
       "spot":"slo",
       "code":2962,
       "lat":35.250,
-      "lon":-121.250
+      "lon":-121.250,
+      "breaks":[
+        {
+        "name":"Piedras Blancas",
+        "id": 135851
+        },
+        {
+          "name":"Cayucos Pier",
+          "id": 5057
+        },
+        {
+          "name":"Cayucos Overview",
+          "id": 135838
+        },
+        {
+          "name":"Morro Bay North",
+          "id": 135840
+        },
+        {
+          "name":"Morro Bay",
+          "id": 4193
+        },
+        {
+          "name:":"Morro Bay Harbor Entrance",
+          "id": 136184
+        },
+        {
+          "name":"Morro Bay Harbor",
+          "id": 135841
+        },
+        {
+          "name":"Baywood Beach",
+          "id": 135850
+        },
+        {
+          "name": "Avila Beach",
+          "id": 5064
+        },
+        {
+          "name": "Shell Beach",
+          "id": 66211
+        },
+        {
+          "name": "Pismo Beach Pier",
+          "id": 5065
+        }
+      ]
     },
     {
       "name":"Ocean Beach",
       "spot":"ob",
       "code":2957,
+      "lat":37.809000000000,
       "lon":-123.500,
-      "lat":37.809000000000
+      "breaks": [
+        {
+          "name":"Ocean Beach", 
+          "id":4127
+        },
+        {
+          "name":"South Ocean Beach", 
+          "id":4128
+        },
+        {
+          "name":"Pacifica/Lindmar", 
+          "id":5013
+        },
+        {
+          "name":"Mavericks", 
+          "id":4152
+        }      
+      ]
     },
     {
       "name":"Oceanside",
@@ -53,14 +140,74 @@
       "spot":"sc",
       "code":2958,
       "lat":37.095208726816,
-      "lon":-122.280547470777
+      "lon":-122.280547470777,
+      "breaks":[
+        { 
+          "name":"Steamer's Lane",
+          "id": 4188
+        }, 
+        { 
+          "name":"Steamer's Lane Fixed",
+          "id": 132587
+        }, 
+        {
+          "name":"Cowells",
+          "id": 4189
+        }, 
+        { 
+          "name":"Pleasure Point",
+          "id": 4190
+        },
+        {
+          "name":"38th Ave",
+          "id": 4191
+        },
+        {
+          "name":"Capitola",
+          "id": 10763
+        }
+      ]
     },
     {
       "name":"South Orange County",
       "spot":"soc",
       "code":2950,
       "lat":33.456,
-      "lon":-117.747
+      "lon":-117.747,
+      "breaks":[
+        {
+          "name":"Salt Creek", 
+          "id": 4233
+        },
+        {
+          "name":"Doheny", 
+          "id": 4848
+        },
+        {
+          "name":"T-Street", 
+          "id": 4235
+        },
+        {
+          "name":"San Clemente State Beach", 
+          "id":4843
+        },
+        {
+          "name": "Uppers",
+          "id": 4738
+        },
+        {
+          "name": "Lowers",
+          "id": 4740
+        },
+        {
+          "name": "Churches",
+          "id": 4237
+        },
+        {
+          "name": "Old Man's",
+          "id": 109918
+        }      
+      ]
     }
   ]
 }  

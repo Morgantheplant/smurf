@@ -3,15 +3,26 @@ import { browserHistory } from "react-router";
 import styles from "../styles/mapstyles.js";
 import SurfReportContainer from "../containers/SurfReportContainer.jsx";
 import ClockContainer from "../containers/ClockContainer.jsx";
-import CloseButton from "../components/CloseButton.jsx";
-import { startSim, clearSim } from "../mainAnimation";
+import CloseButton from "./CloseButton.jsx";
+import { startSim, clearSim } from "../surfReportAnimation";
 import TidesContainer from "../containers/TidesContainer.jsx";
 import mainAnimationLoop from "../mainAnimationLoop";
+import ForecastButton from "./ForecastButton.jsx";
+import DateLabels from "../containers/DateLabels.jsx";
+import OverlayMethods from "./OverlayMethods.js";
+import LocationMenuContainer from "../containers/LocationMenuContainer.jsx"
+import LocationDetailContainer from "../containers/LocationDetailContainer.jsx";
+import ForecastMeter from './ForecastMeter.jsx';
+// todo: remove this
+let isPlayingForecast = false;
+let forecastIndex = 1;
+let forecastTimer;
 
 class MapComponent extends React.Component {
   constructor(props) {
     super(props);
     this.addMarkers = this.addMarkers.bind(this);
+    this.onForecastButtonClicked = this.onForecastButtonClicked.bind(this);
     this.state = {  // todo: remove state here
       locationsAdded: false
     };
@@ -29,18 +40,35 @@ class MapComponent extends React.Component {
     }
     // update map location
     const { surfData } = nextProps;
-    if (surfData) {
-      google.maps.event.addListenerOnce(this.map, "bounds_changed", () => {
+    if (surfData && (!this.props.surfData || surfData.id !== this.props.surfData.id)) {
+      // todo add check here and call this if bounds dont change
+      this.listener = google.maps.event.addListenerOnce(this.map, "bounds_changed", () => {
         mainAnimationLoop.setAnimationTimeout(() => {
           startSim(surfData);
-          console.log(this.map.getBounds(), "this is the bounds")
-        }, 1000);
+        }, 1200);
       });
+      const currBounds = this.map.getBounds() && this.map.getBounds().toJSON();
       this.map.panTo(new google.maps.LatLng(
         surfData.lat,
         surfData.lon
       ));
-    } else {
+      const nextBounds = this.map.getBounds() && this.map.getBounds().toJSON();
+      //TODO: !!IMPORTANT!! fix this
+      if(JSON.stringify(currBounds) === JSON.stringify(nextBounds)){
+        // remove listener and force start of simulation
+        if(this.listener){
+          google.maps.event.removeListener(this.listener);
+          this.listener = null;
+        }
+        startSim(surfData);
+      }
+
+    } else if (!surfData) {
+      // explicitly clear bounds changed listener if exists
+      if(this.listener){
+        google.maps.event.removeListener(this.listener);
+        this.listener = null;
+      }
       clearSim();
     }
   }
@@ -96,7 +124,6 @@ class MapComponent extends React.Component {
       this.map.setZoom(6);
       browserHistory.push(loc.spot);
     });
-    // this.markers.push(spot);
   }
 
   createMarker() {
@@ -114,12 +141,59 @@ class MapComponent extends React.Component {
     });
   }
 
+  onForecastButtonClicked(){
+    if(!isPlayingForecast){
+      isPlayingForecast = true;
+      // todo: grab this info from server
+      const json = {"llcrnrlat": 4.75, "urcrnrlat": 60.5, "llcrnrlon": 189.75, "report_type": "nph", "urcrnrlon": 282.75, "len": 42};
+      // create overlay if it doesn't exist
+      if(!this.overlay){
+        // extend the overlay view with own methods
+        this.overlay =  Object.assign(new google.maps.OverlayView(), OverlayMethods);
+        // set the bounds of the overlay image
+        var bounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(json.llcrnrlat, json.llcrnrlon),
+          new google.maps.LatLng(json.urcrnrlat, json.urcrnrlon)
+        );
+        // init overlay
+        this.overlay.initOverlay(bounds);
+          //preload all of the images
+        for(var i = 0; i < json.len; i++){
+          this.overlay.createImage(this.getImageSrc(i))
+        }
+      }
+      // add image overlay to map
+      this.overlay.setMap(this.map);
+      //start animation timer
+      // todo remove this
+      forecastTimer = mainAnimationLoop.setAnimationInterval(()=>{
+        forecastIndex = forecastIndex >= json.len ? 1 : forecastIndex+1;
+        this.props.changeForecastDay(forecastIndex);
+        const srcImage = this.getImageSrc(forecastIndex);
+        this.overlay.updateImage(srcImage)
+      },1000)
+
+    } else {
+      isPlayingForecast = false;
+      mainAnimationLoop.removeAnimation(forecastTimer);
+      this.overlay && this.overlay.setMap(null);
+
+    }
+  
+  }
+  
+  getImageSrc(index){
+    return `/static/ww3/nph-${index}.png`
+  }
+
   createComponents() {
     return (
       <div>
-        <SurfReportContainer surfData={this.props.surfData.forecast} />
+        <SurfReportContainer surfData={this.props.surfData} />
         <CloseButton onClose={this.props.close} />
         <TidesContainer surfData={this.props.surfData} />
+        {this.props.isMenuOpen && <LocationMenuContainer />}
+        {this.props.locationCode && <LocationDetailContainer locationId={this.props.locationCode} />}
       </div>);
   }
 
@@ -140,16 +214,21 @@ class MapComponent extends React.Component {
              this.createComponents() : null)
         }
         <ClockContainer />
+        <ForecastButton handleClick={this.onForecastButtonClicked} />
+        <ForecastMeter forecastDay={this.props.forecastDay}/>
+        <DateLabels surfData={ surfData } />
       </div>);
   }
 
 }
 
+
 MapComponent.propTypes = {
   surfData: React.PropTypes.object,
   close: React.PropTypes.func,
   getLocations: React.PropTypes.func,
-  initialCenter: React.PropTypes.object
+  initialCenter: React.PropTypes.object,
+  forecastDay: React.PropTypes.number
 };
 
 export default MapComponent;

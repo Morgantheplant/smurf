@@ -3,11 +3,13 @@ import thunk from "redux-thunk";
 import { clockReducer } from "./clockReducer";
 import { surfReportReducer } from "./surfReportReducer";
 import { mapReducer } from "./mapReducer";
+import { menuReducer } from "./menuReducer";
 
 const mainStore = combineReducers({
   clockReducer,
   surfReportReducer,
-  mapReducer
+  mapReducer,
+  menuReducer
 });
 
 

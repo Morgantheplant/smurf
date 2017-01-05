@@ -1,19 +1,69 @@
 import { World, Bodies, Body, Render, Composite, Composites, Constraint , Engine } from 'matter-js';
-//import dataBuilder from './dataBuilder.js';
 import mainAnimationLoop from './mainAnimationLoop';
 import store from './reducers/rootStore';
 import { hoverDay } from './actions/clockActions';
  
-// let surf = require('./data'); 
 
-let svgns = "http://www.w3.org/2000/svg";
-// ary = dataBuilder(surf.ob)
+const svgns = "http://www.w3.org/2000/svg";
 
-let width = 43,
+const width = 43,
   height = 20,
   padding = 3,
   initColor = "#26333c",
-  initHighlight = "#014971";  
+  initHighlight = "#014971";
+
+const forecastGradients = [
+  {
+    status: "poor", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#0909aa'},
+      {offset:'95%','stop-color':'#0575E6'}
+    ]
+  },
+  {
+    status: "poor-to-fair", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#00d2ff'},
+      {offset:'95%','stop-color':'#928DAB'}
+
+    ]
+  },
+  {
+    status: "fair", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#43C6AC'},
+      {offset:'95%','stop-color':'#F8FFAE'}
+    ]
+  },
+  {
+    status: "fair-to-good", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#a8e063'},
+      {offset:'95%','stop-color':'#56ab2f'}
+    ]
+  },
+  {
+    status: "good", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#ffff1c'},
+      {offset:'95%','stop-color':'#00c3ff'}
+    ]
+  },
+  {
+    status: "good-to-epic", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#FF512F'},
+      {offset:'95%','stop-color':' #DD2476'}
+    ]
+  },
+  {
+    status: "epic", 
+    gradient:[
+      {offset:'5%', 'stop-color':'#D31027'},
+      {offset:'95%','stop-color':'#EA384D'}
+    ]
+  }
+]    
 
 function SurfReportAnimation(options){
   this.engine = null;
@@ -27,8 +77,10 @@ function SurfReportAnimation(options){
   this.$el = {
     $el: options.$el
   };
+  this.gradients = {};
   this.svgBoxDims = options.$el.getBoundingClientRect(); 
   this.mainAnimationLoop = options.mainAnimationLoop;
+  window.animations = options.mainAnimationLoop;
   this.name = options.name;
 }
 
@@ -40,6 +92,9 @@ SurfReportAnimation.prototype.reset = function reset(){
   this.horzSprings = [];
 }
 
+
+
+
 SurfReportAnimation.prototype.createBodies = function createBodies(days){
   if(this.engine){
     Engine.clear(this.engine);
@@ -47,23 +102,26 @@ SurfReportAnimation.prototype.createBodies = function createBodies(days){
   }
   this.engine = Engine.create();
   this.mainBackground.style.display = "block";
-   // this.mainBackground.style.visibility = "visible"
-   //  this.mainBackground.style.opacity = 1
+  this.addGradients();
   for (var i = 0; i < days.length; i++) {
     let topRect = this.createTopBar(i);
     let bottomRect = this.createBottomBar(i);
     let physicsBody = this.createPhysicsBodies(i, days);
     topRect.index = i;
     topRect.physicsBody = physicsBody;
-    topRect.parent = this; 
-    topRect.addEventListener('mouseover', mouseOverEvent.bind(topRect));
+    topRect.parent = this;
+    const svgType = days[i].generalCondition.split(" ").join("-")
+    // topRect.setAttribute("class", `top ${svgType}`);
+    bottomRect.setAttribute("class", `base_svg ${svgType}`);  
+    // topRect.addEventListener('mouseover', mouseOverEvent.bind(topRect));
     bottomRect.addEventListener('mouseover', mouseOverEvent.bind(topRect));
     bottomRect.addEventListener('click', clickEvent.bind(topRect))
-    topRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
+    // topRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
     bottomRect.addEventListener('mouseout', mouseOutEvent.bind(topRect));
   }
 }
 
+// todo: reuse elements to they arent trashed and rebuilt every time
 SurfReportAnimation.prototype.destroyElements = function(){
   if(this.engine){
     Engine.clear(this.engine);
@@ -85,10 +143,9 @@ SurfReportAnimation.prototype.createTopBar = function createTopBar(i){
   let xCoord = width * i + (padding * (i+1));
   topRectSVG.setAttributeNS(null, 'height', height);
   topRectSVG.setAttributeNS(null, 'width', width);
-  let rfColor = (i === this.highlighted)? initHighlight : initColor;
-  topRectSVG.setAttributeNS(null, 'fill', rfColor);
+  topRectSVG.setAttributeNS(null, 'opacity', '0');
   topRectSVG.setAttributeNS(null, 'x', xCoord);
-  topRectSVG.setAttributeNS(null, 'class', "tip_svg");
+  // topRectSVG.setAttributeNS(null, 'class', "tip_svg");
   if(!hasTopElement){
     this.svgBods[i] = topRectSVG
     this.mainBackground.appendChild(topRectSVG);
@@ -99,19 +156,19 @@ SurfReportAnimation.prototype.createTopBar = function createTopBar(i){
 SurfReportAnimation.prototype.createBottomBar = function createBottomBar(i){
   let hasBaseElement = this.svgBars[i]; 
   // create base element if it doesn't already exist
-    let baseRectSVG = (hasBaseElement) ? this.svgBars[i] : document.createElementNS(svgns, 'rect');
-    let xCoord = width * i + (padding * (i+1));
-    baseRectSVG.setAttributeNS(null, 'height', height);
-    baseRectSVG.setAttributeNS(null, 'width', width);
-    let fColor = (i === this.highlighted)? initHighlight : initColor;
-    baseRectSVG.setAttributeNS(null, 'fill', fColor);
-    baseRectSVG.setAttributeNS(null, 'x', xCoord);
-    baseRectSVG.setAttributeNS(null, 'class', "base_svg");
-    if(!hasBaseElement){
-      this.mainBackground.appendChild(baseRectSVG);
-      this.svgBars[i] = baseRectSVG;
-    }  
-    return baseRectSVG;
+  let baseRectSVG = (hasBaseElement) ? this.svgBars[i] : document.createElementNS(svgns, 'rect');
+  let xCoord = width * i + (padding * (i+1));
+  baseRectSVG.setAttributeNS(null, 'height', height);
+  baseRectSVG.setAttributeNS(null, 'width', width);
+  let fColor = (i === this.highlighted)? initHighlight : initColor;
+  baseRectSVG.setAttributeNS(null, 'fill', fColor);
+  baseRectSVG.setAttributeNS(null, 'x', xCoord);
+  // baseRectSVG.setAttributeNS(null, 'class', "base_svg");
+  if(!hasBaseElement){
+    this.mainBackground.appendChild(baseRectSVG);
+    this.svgBars[i] = baseRectSVG;
+  }  
+  return baseRectSVG;
 }
 
 SurfReportAnimation.prototype.createPhysicsBodies = function createPhysicsBodies(i, days){
@@ -151,6 +208,53 @@ SurfReportAnimation.prototype.render = function render() {
     }
 };
 
+SurfReportAnimation.prototype.addGradients = function addGradients(){
+  let gradient, defs;
+  let svg = this.$el.$el;
+  forecastGradients.forEach((conditionGrad) => {
+    gradient = this.getGradient(conditionGrad.status, conditionGrad.gradient);
+    defs = svg.querySelector('defs') ||
+    svg.insertBefore( document.createElementNS(svgns,'defs'), svg.firstChild);
+    defs.appendChild(gradient);
+  })
+  // todo: add filter here
+  // const filter = document.createElementNS(svgns, 'filter');
+  // filter.setAttribute('id', 'blur');
+  // const blur = document.createElementNS(svgns, 'feGaussianBlur');
+
+  // <filter id="blurMe">
+  //   <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+  // </filter>  
+}
+
+SurfReportAnimation.prototype.getGradient = function getGradient(id,stops){
+  let grad = this.gradients[id];
+
+  if(!grad){
+    grad  = document.createElementNS(svgns,'linearGradient');
+    grad.setAttribute('id',id);
+    grad.setAttribute('x1', '0%');
+    grad.setAttribute('x2', '0%'); 
+    grad.setAttribute('y1', '0%'); 
+    grad.setAttribute('y2', '100%'); 
+    // x1="0%" y1="0%" x2="0%" y2="100%"
+    
+    for (var i=0;i<stops.length;i++){
+      var attrs = stops[i];
+      var stop = document.createElementNS(svgns,'stop');
+      for (var attr in attrs){
+        if (attrs.hasOwnProperty(attr)){
+          stop.setAttribute(attr,attrs[attr]);
+        } 
+      }
+      grad.appendChild(stop);
+    }
+    this.gradients[id] = grad;
+  }
+  
+  return grad;
+}
+
 SurfReportAnimation.prototype.init = function init(data){
   //create bodies will reset if already called
   this.createBodies(data);
@@ -171,24 +275,29 @@ SurfReportAnimation.prototype.matterEngine = function matterEngine(){
 function clickEvent(){
   let old = this.parent.highlighted;
   this.parent.highlighted = this.index;
-  this.parent.svgBods[this.index].setAttributeNS(null, 'fill', initHighlight);
+  // this.parent.svgBods[this.index].setAttributeNS(null, 'fill', initHighlight);
   this.parent.svgBars[this.index].setAttributeNS(null, 'fill', initHighlight);
-  this.parent.svgBods[old].setAttributeNS(null, 'fill', initColor);
+  // this.parent.svgBods[old].setAttributeNS(null, 'fill', initColor);
   this.parent.svgBars[old].setAttributeNS(null, 'fill', initColor);
 }
 
 
 function mouseOverEvent(){
-  this.parent.svgBars[this.index].setAttributeNS(null, 'fill', '#0c9fd5');
-  this.parent.svgBods[this.index].setAttributeNS(null, 'fill', '#0c9fd5')
+  const bar = this.parent.svgBars[this.index];
+  bar.setAttributeNS(null, 'fill', '#0c9fd5');
+  // bar.setAttributeNS(null, 'class', 'bottom');
+  // this.parent.svgBods[this.index].setAttributeNS(null, 'fill', '#0c9fd5');
+
   store.dispatch(hoverDay(this.index))
 }
 
 function mouseOutEvent(){
   let fColor = (this.index === this.parent.highlighted)? initHighlight : initColor;
   this.setAttributeNS(null, 'fill',fColor);
-  this.parent.svgBars[this.index].setAttributeNS(null, 'fill', fColor);
-  this.parent.svgBods[this.index].setAttributeNS(null, 'fill', fColor);
+  const bar = this.parent.svgBars[this.index];
+  bar.setAttributeNS(null, 'fill', fColor);
+  // bar.setAttributeNS(null, 'class', '${bar.condition}');
+  // this.parent.svgBods[this.index].setAttributeNS(null, 'fill', fColor);
   Body.setVelocity(this.physicsBody, {x:0,y:-5}, {x:0.000,y:0.001});
   this.setAttributeNS(null, 'height', height);
   this.setAttributeNS(null, 'width', width);
@@ -212,20 +321,26 @@ function startAnimation(raw){
   boundAnimation = animationInstance.init(raw.forecast); 
 }
 
+
+
 export function startSim(raw){
+  console.log('start sim')
   raw = raw || {};
   var hasForecast = raw.forecast && raw.forecast.length;
   //hide svg elements if called with no arguments and it has already been initialized
   if(!hasForecast && animationInstance){
+     console.log("clearing animation")
     clearSim();
     return
   }
   // create animation if it hasnt been initialized
   if(!animationInstance && hasForecast){
+    console.log("creating animation")
     createInstance();
   }
   // make sure viz exists and start animation 
-  if(hasForecast && raw.id !== currentViz){
+  if(hasForecast){
+    console.log("starting animation")
     startAnimation(raw);
   }
 }

@@ -1,21 +1,22 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
 import { browserHistory } from "react-router";
 import { connect } from "react-redux";
 import mainAnimationLoop from "../mainAnimationLoop";
 import MapComponent from "../components/MapComponent.jsx";
-import { getLocations, getLocationData, getReport, clearReport } from "../actions/mapActions";
-import { clockTick } from "../actions/clockActions";
+import { getLocations, getLocationData, getReport, clearReport, changeForecastDay } from "../actions/mapActions";
+import { clockTick, hoverDay } from "../actions/clockActions";
 
 const initialCenter = { lat: 37.309, lng: -122.400 };
 
 
-class MapContainer extends React.Component {
+class MapContainer extends Component {
 
   constructor(props) {
     super(props);
     this.getLocations = this.getLocations.bind(this);
     this.updateSpot = this.updateSpot.bind(this);
     this.close = this.close.bind(this);
+    this.changeForecastDay = this.changeForecastDay.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +57,15 @@ class MapContainer extends React.Component {
     browserHistory.push("/");
   }
 
+  changeForecastDay(day){
+    const { dispatch } = this.props;
+    if(day%8===0){
+      dispatch(hoverDay(day/8))
+    }
+
+    dispatch(changeForecastDay(day));
+  }
+
   updateSpot() {
     const loc = this.props.params.surfspot;
     const { dispatch } = this.props;
@@ -74,22 +84,29 @@ class MapContainer extends React.Component {
         initialCenter={initialCenter}
         surfData={this.props.currentReport}
         close={this.close}
+        isMenuOpen={this.props.isMenuOpen}
+        locationCode={this.props.locationCode}
+        changeForecastDay={this.changeForecastDay}
+        forecastDay={this.props.forecastDay}
       />
     );
   }
 }
 
 MapContainer.propTypes = {
-  locations: React.PropTypes.array,
-  currentReport: React.PropTypes.object,
-  dispatch: React.PropTypes.func,
-  params: React.PropTypes.object
+  locations: PropTypes.array,
+  currentReport: PropTypes.object,
+  dispatch: PropTypes.func,
+  params: PropTypes.object,
 };
 
 function mapStateToProps(state) {
   return {
     locations: state.mapReducer.locations,
-    currentReport: state.mapReducer.currentReport
+    currentReport: state.mapReducer.currentReport,
+    isMenuOpen: state.menuReducer.isOpen,
+    locationCode: state.menuReducer.locationCode,
+    forecastDay: state.mapReducer.forecastDay
   };
 }
 

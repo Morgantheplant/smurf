@@ -1,8 +1,16 @@
+
 @import 'styles/tides';
 @import 'styles/surf_report';
 @import 'styles/svg';
 @import 'styles/led_clock';
 @import 'styles/surf_report_dashboard';
+@import 'styles/wind_report';
+@import 'styles/date_labels';
+@import 'styles/animations';
+@import 'styles/menu_items';
+@import 'styles/location_detail';
+@import 'styles/forecast_meter';
+
 
 @mainSize:   800px;
 @blueTransparentBgColor: rgba(1, 73, 113, 0.25);
@@ -16,6 +24,30 @@ html, body {
   font-weight:200;
 }
 
+.forecast-button{
+  position: absolute;
+  border:2px solid white;
+  height:30px;
+  width:30px;
+  border-radius:50%;
+  top:8px;
+  left: 120px;
+  background:rbga(0,0,0,0.5)
+}
+
+.forecast-image-container{
+  border:2px solid #39e4fd;
+  position: absolute;
+  .forecast-image{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity:0.7;
+    -webkit-filter: blur(8px); /* Safari */
+    filter: blur(8px);
+  }
+}
+
 
 
 #map, #react-container, .base-container {
@@ -25,22 +57,76 @@ html, body {
 
 #world {
   position: absolute;
-  bottom:28px;
+  bottom:38px;
   left: 50%;
   margin-left: (@mainSize/-2);
   overflow: hidden;
-  // // opacity: 0;
-  // // visibility: hidden;
-  // transition: opacity 1s;
   pointer-events: none;
   rect{
     pointer-events: visible;
+    cursor:pointer;
   }
   z-index:2;
   &:hover div{
   opacity:.5;
   }
+}
+
+.base_svg{
+  fill:#005284;
+  // gradients are added in the svg base definition
+  &:hover{
+    fill: #31e3ff;
+    -webkit-filter: drop-shadow(10px 10px 10px rgba(255,255,255,.7));
+          filter: drop-shadow(10px 10px 10px rgba(255,255,255,.7));
   }
+  &.poor{
+    fill: url(#poor);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+  &.poor-to-fair{
+    fill: url(#poor-to-fair);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+  &.fair{
+    fill: url(#fair);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+  &.fair-to-good{
+    fill: url(#fair-to-good);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+  &.good{
+    fill: url(#good);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+  &.good-to-epic{
+    fill: url(#good-to-epic);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+  &.epic{
+    fill: url(#epic);
+    &:hover{
+      fill: #31e3ff;
+    }
+  }
+}
+
+
+
+ 
 
 #text-container{
   color:white;

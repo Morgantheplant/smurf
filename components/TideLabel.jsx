@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
 
-class TideLabel extends React.Component {
+class TideLabel extends Component {
   render() {
     const labelStyle = {
       position: "absolute",
@@ -19,11 +19,11 @@ class TideLabel extends React.Component {
 }
 
 TideLabel.propTypes = {
-  xPos: React.PropTypes.number,
-  yPos: React.PropTypes.number,
-  color: React.PropTypes.string,
-  title: React.PropTypes.string,
-  text: React.PropTypes.string
+  xPos: PropTypes.number,
+  yPos: PropTypes.number,
+  color: PropTypes.string,
+  title: PropTypes.string,
+  text: PropTypes.string
 };
 
 export default TideLabel;

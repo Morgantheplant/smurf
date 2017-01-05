@@ -28,11 +28,35 @@ module.exports = function(raw){
             lon: raw.lon,
             forecast: multiDay,
             id:raw.id,
-            tidesData: createTidesData(raw.Tide.dataPoints)
+            tidesData: createTidesData(raw.Tide.dataPoints),
+            Weather: raw.Weather,
+            WaterTemp: raw.WaterTemp,
+            wind: createWindData(raw.Wind)
         }
         return report
     } 
   
+}
+
+function createWindData(wind){
+  var windInfo = [];
+  var dailyWind;
+  for (var i = 0, len = wind.wind_direction.length; i < len; i++) {
+    dailyWind = [];
+    for (var j = 0, len1 = wind.wind_direction[i].length; j < len1; j++) {
+      dailyWind.push({
+        direction: wind.wind_direction[i][j],
+        time: wind.periodSchedule[i][j],
+        knots:  roundHundredth(wind.wind_speed[i][j]),
+      })
+    }
+    windInfo.push(dailyWind)
+  }  
+  return windInfo
+}
+
+function roundHundredth(num) {
+    return Math.ceil(num * 100) / 100;
 }
 
 function createTidesData(tidesArray, width, height){

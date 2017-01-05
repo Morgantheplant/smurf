@@ -27,6 +27,14 @@ const receiveReport = function receiveReport(currentReport) {
   };
 };
 
+export const changeForecastDay = function changeForecastDay(day){
+  return {
+    type: constants.CHANGE_FORECAST_DAY,
+    day
+  }
+
+}
+
 export const clearReport = function clearReport() {
   return {
     type: constants.CLEAR_REPORT

@@ -4,8 +4,16 @@ import SurfReportDashboard from "../components/SurfReportDashboard.jsx";
 
 
 class SurfReportContainer extends React.Component {
+  formatTemp(min, max) {
+
+    return min !== max ? `${min}-${max}`: (min || max) 
+  }
   render() {
-    const ary = this.props.surfData;
+    const { surfData, isMenuOpen } = this.props;
+    const ary = surfData.forecast;
+
+    const { Weather, WaterTemp } = surfData;
+    const { temp_min, temp_max } = Weather
     return (
       <SurfReportDashboard
         date={ary[this.props.indexHovered].date}
@@ -18,6 +26,10 @@ class SurfReportContainer extends React.Component {
         conditionIcon={""}
         conditionsText={ary[this.props.indexHovered].generalCondition || "-"}
         forecaseSummaryText={ary[this.props.indexHovered].generalText}
+        waterTemp={ this.formatTemp(WaterTemp.watertemp_min, WaterTemp.watertemp_max)  }
+        airTemp={ this.formatTemp(temp_min[this.props.indexHovered], temp_max[this.props.indexHovered]) }
+        code={ surfData.id }
+        isMenuOpen={ isMenuOpen }
       />
     );
   }
@@ -25,12 +37,14 @@ class SurfReportContainer extends React.Component {
 
 SurfReportContainer.propTypes = {
   indexHovered: React.PropTypes.number,
-  surfData: React.PropTypes.array
+  surfData: React.PropTypes.object,
+  tidesData: React.PropTypes.array
 };
 
 function mapStateToProps(state) {
   return {
-    indexHovered: state.surfReportReducer.indexHovered
+    indexHovered: state.surfReportReducer.indexHovered,
+    isMenuOpen: state.menuReducer.isOpen
   };
 }
 

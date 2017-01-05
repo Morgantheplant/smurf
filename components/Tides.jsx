@@ -1,5 +1,6 @@
 import React from "react";
 import TideLabel from "./TideLabel.jsx";
+import WindForecast from "./WindForecast.jsx";
 
 const nightShade = "rgb(2, 15, 24,0.01);";
 const labelColors = "white";
@@ -99,9 +100,10 @@ class Tides extends React.Component {
           width={width}
           height={height}
         />
-         {
+        {
           specialTides.map(this.createLabels, this)
         }
+       <WindForecast targetIndex={targetIndex} wind={surfData.wind} />
       </div>);
   }
 
