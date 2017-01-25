@@ -43,7 +43,7 @@ class ForecastMeter extends Component {
     return daysOfWeek[day.isoWeekday()-1]
   }
   render() {
-    const days = Math.floor(this.props.forecastDay/8);
+    const days = Math.ceil(this.props.forecastDay/8) - 1;
     const currentDay = moment().add(days, 'day');
     return (
       <div className="forecast-widget" >
