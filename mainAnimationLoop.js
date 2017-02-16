@@ -1,4 +1,4 @@
-var MainAnimationLoop = require('./animation/animationLoop');
+var MainAnimationLoop = require('simple_animation_loop');
 var mainAnimation = new MainAnimationLoop();
 // exporting instance so we can access in multiple places
 // window.addEventListener('resize', function throttleResize(){ 

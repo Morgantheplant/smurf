@@ -38,6 +38,7 @@
     "react-router": "^2.0.0",
     "redux": "^3.3.1",
     "redux-thunk": "^2.1.0",
+    "simple_animation_loop": "^1.0.1",
     "uglify-js": "^2.6.2",
     "watchify": "^3.7.0"
   },
