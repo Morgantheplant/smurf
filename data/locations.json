@@ -37,6 +37,13 @@
       "lat": 20.578945, 
       "lon": -156.411836
     },
+    {
+      "name": "North Costa Rica",
+      "spot": "ncosta",
+      "code": 2979,
+      "lat": 9.978419, 
+      "lon": -85.713387
+    },
       {
       "name": "Maui North",
       "spot": "nmaui",
