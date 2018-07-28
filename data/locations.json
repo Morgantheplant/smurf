@@ -16,6 +16,51 @@
       "breaks":[]
     },
     {
+      "name":"Bocas Del Toro",
+      "spot":"bocas",
+      "code":8410,
+      "lat":9.389000000000,
+      "lon":-82.202000000000,
+      "breaks":[]
+    },
+    {
+      "name": "Sayulita/Riviera Nayarit",
+      "spot": "sayulita",
+      "code": 2160,
+      "lat": 20.872348, 
+      "lon": -105.439533
+    },
+    {
+      "name": "Maui South",
+      "spot": "smaui",
+      "code": 3239,
+      "lat": 20.578945, 
+      "lon": -156.411836
+    },
+      {
+      "name": "Maui North",
+      "spot": "nmaui",
+      "code": 8900,
+      "lat": 20.951414, 
+      "lon": -156.357333
+    },
+    {
+      "name": "Abreojos",
+      "spot": "Abre",
+      "code": 2971,
+      "lat": 26.658707, 
+      "lon": -113.605336
+
+    },
+      {
+      "name": "Maui West",
+      "spot": "wmaui",
+      "code": 3238,
+      "lat": 21.020823, 
+      "lon":-156.644844
+    },
+
+    {
       "name":"Santa Barabara",
       "spot":"sb",
       "code":2141,

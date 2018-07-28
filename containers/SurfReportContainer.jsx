@@ -14,18 +14,19 @@ class SurfReportContainer extends React.Component {
 
     const { Weather, WaterTemp } = surfData;
     const { temp_min, temp_max } = Weather
+    const target = ary[this.props.indexHovered] || {}
     return (
       <SurfReportDashboard
-        date={ary[this.props.indexHovered].date}
-        dayOfWeek={ary[this.props.indexHovered].dayOfWeek}
-        regionName={ary[this.props.indexHovered].regionAlias}
-        location={ary[this.props.indexHovered].dayofWeek}
-        datePretty={ary[this.props.indexHovered].date}
-        surfHeightRange={`${ary[this.props.indexHovered].surfMax}-${ary[this.props.indexHovered].surfMin}`}
-        surfHeightRangeText={ary[this.props.indexHovered].surfText}
+        date={target.date}
+        dayOfWeek={target.dayOfWeek}
+        regionName={target.regionAlias}
+        location={target.dayofWeek}
+        datePretty={target.date}
+        surfHeightRange={`${target.surfMax}-${target.surfMin}`}
+        surfHeightRangeText={target.surfText}
         conditionIcon={""}
-        conditionsText={ary[this.props.indexHovered].generalCondition || "-"}
-        forecaseSummaryText={ary[this.props.indexHovered].generalText}
+        conditionsText={target.generalCondition || "-"}
+        forecaseSummaryText={target.generalText}
         waterTemp={ this.formatTemp(WaterTemp.watertemp_min, WaterTemp.watertemp_max)  }
         airTemp={ this.formatTemp(temp_min[this.props.indexHovered], temp_max[this.props.indexHovered]) }
         code={ surfData.id }

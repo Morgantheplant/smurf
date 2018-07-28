@@ -101,7 +101,7 @@ class Tides extends React.Component {
           height={height}
         />
         {
-          specialTides.map(this.createLabels, this)
+         specialTides && specialTides.map(this.createLabels, this)
         }
        <WindForecast targetIndex={targetIndex} wind={surfData.wind} />
       </div>);
